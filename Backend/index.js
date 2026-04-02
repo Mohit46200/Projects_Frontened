@@ -1,5 +1,6 @@
 const express = require("express");
 const flower = require("./Routes/flower")
+const plant = require("./Routes/plant")
 const cors = require("cors");
 
 
@@ -9,6 +10,7 @@ const PORT = 8000;
 app.use(cors());
 
 app.use("/",flower)
+app.use("/",plant)
 
 
 app.listen(PORT, () => {
