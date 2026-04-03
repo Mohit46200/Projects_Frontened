@@ -1,8 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 const Plant = () => {
-  const [plant, setPlant] = useState([]);
+  const [plant, setPlant] = useState
+  const [loading,setLoading] = useState(true)
+  
 
   const apidata = async () => {
     try {
@@ -12,7 +14,9 @@ const Plant = () => {
       const dataArray = Object.values(res.data);
       console.log(res.data)
       console.log(dataArray)
-      setPlant(dataArray);
+      setPlant(dataArray)
+      setLoading(false)
+
     } catch (error) {
       console.log("Error is ", error);
     }
@@ -20,7 +24,24 @@ const Plant = () => {
 
   useEffect(() => {
     apidata();
-  }, []);
+  }, [])
+
+   if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="flex flex-col items-center gap-4 p-8 bg-gray-800 rounded-2xl shadow-xl">
+          
+          <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+          
+          <h1 className="text-white text-lg font-semibold tracking-wide">
+            Loading...
+          </h1>
+  
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
