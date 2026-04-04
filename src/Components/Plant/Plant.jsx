@@ -1,17 +1,23 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
+import { useContext } from "react"
+
+
+
 
 const Plant = () => {
-  const [plant, setPlant] = useState
+  const [plant, setPlant] = useState([])
   const [loading,setLoading] = useState(true)
-  
+  const {cart,setCart} = useContext(Globalcontext)
+
 
   const apidata = async () => {
     try {
       const res = await axios.get("http://localhost:8000/plant");
 
     
-      const dataArray = Object.values(res.data);
+      const dataArray = Object.values(res.data)
       console.log(res.data)
       console.log(dataArray)
       setPlant(dataArray)
@@ -20,11 +26,20 @@ const Plant = () => {
     } catch (error) {
       console.log("Error is ", error);
     }
-  };
+  }
 
   useEffect(() => {
     apidata();
   }, [])
+
+
+  const addcart = () => {
+    setCart(prev => {
+      const updated = prev + 1
+      return updated
+    })
+  }
+
 
    if (loading) {
     return (
@@ -64,14 +79,14 @@ const Plant = () => {
             <div className="flex gap-2 justify-center">
                 <button
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                  onClick={() => console.log("Buy Now", flower)}
+                  
                 >
                   Buy Now
                 </button>
 
                 <button
                   className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
-                  onClick={() => console.log("Add to Cart", flower)}
+                  onClick={addcart}
                 >
                   Add to Cart
                 </button>
@@ -81,7 +96,7 @@ const Plant = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
 export default Plant;

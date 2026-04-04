@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
+import { useContext } from "react"
+
 
 const Flower = () => {
   const [flowers, setFlowers] = useState([]);
-  // const [loading,setLoading] = useState(true)
+  const [loading,setLoading] = useState(true)
+  const {cart,setCart} = useContext(Globalcontext)
 
   const apidata = async () => {
     try {
+ 
       const res = await axios.get("http://localhost:8000/flower");
 
     
@@ -14,7 +19,7 @@ const Flower = () => {
       console.log(res.data)
       console.log(dataArray)
       setFlowers(dataArray)
-      // setLoading(false)
+      setLoading(false)
     } catch (error) {
       console.log("Error is ", error);
     }
@@ -24,21 +29,29 @@ const Flower = () => {
     apidata();
   }, []);
 
-//   if (loading) {
-//   return (
-//     <div className="flex items-center justify-center min-h-screen bg-gray-900">
-//       <div className="flex flex-col items-center gap-4 p-8 bg-gray-800 rounded-2xl shadow-xl">
-        
-//         <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
-        
-//         <h1 className="text-white text-lg font-semibold tracking-wide">
-//           Loading...
-//         </h1>
 
-//       </div>
-//     </div>
-//   )
-// }
+ const addcart = () => {
+    setCart(prev => {
+      const updated = prev + 1
+      return updated
+    })
+  }
+
+  if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="flex flex-col items-center gap-4 p-8 bg-gray-800 rounded-2xl shadow-xl">
+        
+        <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+        
+        <h1 className="text-white text-lg font-semibold tracking-wide">
+          Loading...
+        </h1>
+
+      </div>
+    </div>
+  )
+}
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -63,14 +76,14 @@ const Flower = () => {
               <div className="flex gap-2 justify-center">
                 <button
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                  onClick={() => console.log("Buy Now", flower)}
+
                 >
                   Buy Now
                 </button>
 
                 <button
                   className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
-                  onClick={() => console.log("Add to Cart", flower)}
+                  onClick={addcart}
                 >
                   Add to Cart
                 </button>
@@ -79,7 +92,7 @@ const Flower = () => {
           </div>
         ))}
       </div>
-  );
-};
+  )
+}
 
 export default Flower;
