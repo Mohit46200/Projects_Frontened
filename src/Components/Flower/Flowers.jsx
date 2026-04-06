@@ -12,7 +12,7 @@ const Flower = () => {
   const apidata = async () => {
     try {
  
-      const res = await axios.get("http://localhost:8000/flower");
+      const res = await axios.get("http://localhost:8000/flower")
 
     
       const dataArray = Object.values(res.data);
