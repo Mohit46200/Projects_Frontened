@@ -3,6 +3,7 @@ import Layout from "./Components/Layout/Layout"
 import Homechild from "./Components/Home/Homechild"
 import FlowerChild from "./Components/Flower/FlowerChild"
 import  PlantChild from "./Components/Plant/PlantChild"
+import Loginchild from "./Google_Login/Loginchild"
 
 const Router = createBrowserRouter([
     {
@@ -15,7 +16,8 @@ const Router = createBrowserRouter([
             },
             Homechild(),
             FlowerChild(),
-            PlantChild()
+            PlantChild(),
+            Loginchild()
         ]
     }
 
