@@ -5,7 +5,7 @@ import { useContext } from "react"
 
 const Header = () => {
 
-    const {cart,setCart} = useContext(Globalcontext)
+    const {cart,setCart,login,setLogin} = useContext(Globalcontext)
 
 
 
@@ -24,8 +24,6 @@ const Header = () => {
                     <Link to="/home" className="hover:text-black transition">Home</Link>
                     <Link to="/flower" className="hover:text-black transition">Flowers</Link>
                     <Link to="/plant" className="hover:text-black transition">Plant</Link>
-                    <a href="#" className="hover:text-black transition">Gifts</a>
-                    <a href="#" className="hover:text-black transition">Occasions</a>
                 </nav>
 
                 

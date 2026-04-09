@@ -23,7 +23,7 @@ const Flower = () => {
     } catch (error) {
       console.log("Error is ", error);
     }
-  };
+  }
 
   useEffect(() => {
     apidata();

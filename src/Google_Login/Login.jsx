@@ -1,35 +1,42 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useEffect ,useContext} from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { Globalcontext } from "../GlobalContext/globalcontext"
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const {login,setLogin} = useContext(Globalcontext)
+
 
   useEffect(() => {
-   
+   console.log("1")
     google.accounts.id.initialize({
       client_id: "347256781647-n12rvq41rtc7eqk1lr8hq77u03vi1niu.apps.googleusercontent.com",
       callback: handleCallback,
     });
-
+    console.log("2")
     google.accounts.id.renderButton(
       document.getElementById("googleBtn"),
       { theme: "outline", size: "large" }
     );
-  }, []);
+    console.log("3")
+  }, [])
 
   const handleCallback = async (response) => {
     try {
+      console.log("4")
+      console.log(response)
       const res = await axios.post(
         "http://localhost:8000/auth/google",
         {
           credential: response.credential,
         }
-      );
+      )
 
       localStorage.setItem("token", res.data.token);
-
-    //   navigate("/dashboard");
+            console.log("5")
+      setLogin(true)
+    //   navigate("/dashboard")
     } catch (err) {
       console.log(err);
     }
@@ -38,10 +45,9 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       
-      {/* Card */}
+     
       <div className="w-full max-w-md p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl">
-        
-        {/* Heading */}
+    
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-white">
             Login with Google
@@ -51,7 +57,7 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Google Button */}
+      
         <div className="flex justify-center">
           <div
             id="googleBtn"
@@ -59,14 +65,14 @@ const Login = () => {
           ></div>
         </div>
 
-        {/* Divider */}
+      
         <div className="flex items-center my-6">
           <div className="flex-1 h-px bg-gray-600"></div>
           <span className="px-3 text-gray-400 text-xs">OR</span>
           <div className="flex-1 h-px bg-gray-600"></div>
         </div>
 
-        {/* Optional Inputs (future ready UI) */}
+       
         <div className="space-y-4">
           <input
             type="email"
@@ -85,7 +91,7 @@ const Login = () => {
           </button>
         </div>
 
-        {/* Footer */}
+       
         <p className="text-center text-gray-500 text-xs mt-6">
           By continuing, you agree to our Terms & Privacy Policy
         </p>
