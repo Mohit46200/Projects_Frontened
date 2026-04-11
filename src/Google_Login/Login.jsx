@@ -32,7 +32,7 @@ const Login = () => {
           credential: response.credential,
         }
       )
-
+      console.log(response.credential)
       localStorage.setItem("token", res.data.token);
             console.log("5")
       setLogin(true)
@@ -41,7 +41,13 @@ const Login = () => {
       console.log(err);
     }
   };
-
+  if(login){
+    return (
+      <>
+        <h1>You have logged in</h1>
+      </>
+    )
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       

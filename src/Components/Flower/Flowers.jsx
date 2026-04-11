@@ -1,13 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useContext } from "react";
 import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
-import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 const Flower = () => {
+  const navigate = useNavigate();
   const [flowers, setFlowers] = useState([]);
   const [loading,setLoading] = useState(true)
-  const {cart,setCart} = useContext(Globalcontext)
+  const {cart,setCart,login,setLogin} = useContext(Globalcontext)
 
   const apidata = async () => {
     try {
@@ -21,7 +22,7 @@ const Flower = () => {
       setFlowers(dataArray)
       setLoading(false)
     } catch (error) {
-      console.log("Error is ", error);
+      console.log("Error is ", error)
     }
   }
 
@@ -31,10 +32,14 @@ const Flower = () => {
 
 
  const addcart = () => {
-    setCart(prev => {
+    if(!login){
+      navigate("/login")
+    }
+    else{
+      setCart(prev => {
       const updated = prev + 1
       return updated
-    })
+    })}
   }
 
   if (loading) {
