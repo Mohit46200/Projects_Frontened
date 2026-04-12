@@ -8,14 +8,13 @@ const Flower = () => {
   const navigate = useNavigate();
   const [flowers, setFlowers] = useState([]);
   const [loading,setLoading] = useState(true)
-  const {cart,setCart,login,setLogin} = useContext(Globalcontext)
+  const {cart,setCart,login,setLogin,userLoginData} = useContext(Globalcontext)
 
   const apidata = async () => {
     try {
  
       const res = await axios.get("http://localhost:8000/flower")
 
-    
       const dataArray = Object.values(res.data);
       console.log(res.data)
       console.log(dataArray)
@@ -31,15 +30,27 @@ const Flower = () => {
   }, []);
 
 
- const addcart = () => {
-    if(!login){
-      navigate("/login")
+ const addcart = async(product_id) => {
+    try{
+        if(!login){
+            navigate("/login")
+        }
+        else{
+            setCart(prev => {
+                const updated = prev + 1
+                return updated
+            })
+            const payload = {
+              email:userLoginData.email,
+              product_id:[product_id]
+            }
+            const res = await axios.post("http://localhost:8000/data/cartdata",payload)
+            }
+
+    }catch(error){
+      console.log("Error is ",error)
     }
-    else{
-      setCart(prev => {
-      const updated = prev + 1
-      return updated
-    })}
+    
   }
 
   if (loading) {
@@ -88,7 +99,7 @@ const Flower = () => {
 
                 <button
                   className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
-                  onClick={addcart}
+                  onClick={() => addcart(flower.product_id)}
                 >
                   Add to Cart
                 </button>

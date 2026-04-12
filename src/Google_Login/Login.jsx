@@ -5,7 +5,7 @@ import { Globalcontext } from "../GlobalContext/globalcontext"
 
 const Login = () => {
   const navigate = useNavigate()
-  const {login,setLogin} = useContext(Globalcontext)
+  const {login,setLogin, userLoginData,setUserLoginData} = useContext(Globalcontext)
 
 
   useEffect(() => {
@@ -34,13 +34,15 @@ const Login = () => {
       )
       console.log(response.credential)
       localStorage.setItem("token", res.data.token);
-            console.log("5")
+      console.log("5")
       setLogin(true)
+      setUserLoginData(res.data.user)
+      console.log(res.data.user)
     //   navigate("/dashboard")
     } catch (err) {
       console.log(err);
     }
-  };
+  }
   if(login){
     return (
       <>

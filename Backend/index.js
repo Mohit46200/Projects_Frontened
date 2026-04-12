@@ -5,7 +5,7 @@ const cors = require("cors")
 const connectMongoDb = require("/home/mohit/Desktop/Coding/Projects/Project1/Backend/Connection/connection.js")
 const dotenv = require("dotenv");
 const authRoutes = require("./Routes/auth");
-
+const cartData = require("./Routes/cartData")
 
 
 const app = express()
@@ -23,7 +23,8 @@ app.use(express.json());
 
 app.use("/",flower)
 app.use("/",plant)
-app.use("/auth", authRoutes);
+app.use("/auth", authRoutes)
+app.use("/data", cartData)
 
 
 app.listen(PORT, () => {
