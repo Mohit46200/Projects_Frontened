@@ -8,7 +8,7 @@ router.post("/cartdata", async (req, res) => {
         let cartdata = await CartData.findOne({email:email})
         if(cartdata){
             cartdata.product_id.push(product_id[0])
-            await cartdata.save
+            await cartdata.save()
         }else{
             cartdata = await CartData.create({
                 email:email,
