@@ -8,14 +8,14 @@ const Flower = () => {
   const navigate = useNavigate();
   const [flowers, setFlowers] = useState([]);
   const [loading,setLoading] = useState(true)
-  const {cart,setCart,login,setLogin,userLoginData} = useContext(Globalcontext)
+  const {setCart,login,userLoginData} = useContext(Globalcontext)
 
   const apidata = async () => {
     try {
  
       const res = await axios.get("http://localhost:8000/flower")
 
-      const dataArray = Object.values(res.data);
+      const dataArray = Object.values(res.data)
       console.log(res.data)
       console.log(dataArray)
       setFlowers(dataArray)
@@ -26,8 +26,8 @@ const Flower = () => {
   }
 
   useEffect(() => {
-    apidata();
-  }, []);
+    apidata()
+  }, [])
 
 
  const addcart = async(product_id) => {
@@ -36,22 +36,30 @@ const Flower = () => {
             navigate("/login")
         }
         else{
-            setCart(prev => {
-                const updated = prev + 1
-                return updated
-            })
             const payload = {
               email:userLoginData.email,
               product_id:[product_id]
             }
             const res = await axios.post("http://localhost:8000/data/cartdata",payload)
-            }
+            setCart(res.data.data.product_id.length)
+          }
 
     }catch(error){
       console.log("Error is ",error)
     }
     
   }
+  
+  const cartcount = async() => {
+          const payload = {
+              email:userLoginData.email
+            }
+            const res = await axios.post("http://localhost:8000/data/cartdata",payload)
+            setCart(res.data.data.product_id.length)
+          }
+  useEffect(() => {
+    cartcount()
+  },[login])
 
   if (loading) {
   return (

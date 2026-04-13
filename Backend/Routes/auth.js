@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const dotenv = require("dotenv");
 
-const User = require("../models/User");
+const User = require("../models/UserSchema");
 
 dotenv.config();
 

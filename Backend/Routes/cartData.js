@@ -17,7 +17,7 @@ router.post("/cartdata", async (req, res) => {
         }
 
         res.status(201).json({
-            success: true,
+            data:cartdata
             
         })
 
@@ -25,5 +25,6 @@ router.post("/cartdata", async (req, res) => {
         console.log("Error is ", error);
     }
 })
+
 
 module.exports = router;
