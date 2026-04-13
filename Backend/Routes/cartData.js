@@ -17,12 +17,26 @@ router.post("/cartdata", async (req, res) => {
         }
 
         res.status(201).json({
+            message:"Success",
             data:cartdata
             
         })
 
     } catch (error) {
         console.log("Error is ", error);
+    }
+})
+
+router.get("/cartcount/:email",async (req,res) => {
+    try{
+            const {email} = req.params
+            const cartdata = await CartData.findOne({ email });
+
+            res.status(200).json({
+                data: cartdata
+            })
+    }catch(error){
+        console.log("Error is ",error)
     }
 })
 

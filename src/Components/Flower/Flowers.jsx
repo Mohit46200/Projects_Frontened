@@ -8,7 +8,7 @@ const Flower = () => {
   const navigate = useNavigate();
   const [flowers, setFlowers] = useState([]);
   const [loading,setLoading] = useState(true)
-  const {setCart,login,userLoginData} = useContext(Globalcontext)
+  const {cart,setCart,login,userLoginData} = useContext(Globalcontext)
 
   const apidata = async () => {
     try {
@@ -41,6 +41,7 @@ const Flower = () => {
               product_id:[product_id]
             }
             const res = await axios.post("http://localhost:8000/data/cartdata",payload)
+            console.log(res)
             setCart(res.data.data.product_id.length)
           }
 
@@ -50,16 +51,20 @@ const Flower = () => {
     
   }
   
-  const cartcount = async() => {
-          const payload = {
-              email:userLoginData.email
-            }
-            const res = await axios.post("http://localhost:8000/data/cartdata",payload)
-            setCart(res.data.data.product_id.length)
-          }
+  const cartcount = async () => {
+    try{
+        const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
+        console.log(data)
+        setCart(data.data.data.product_id.length)
+    }catch(error){
+      console.log("Error is ",error)
+    }
+  }
+
   useEffect(() => {
     cartcount()
-  },[login])
+  },[login,userLoginData])
+
 
   if (loading) {
   return (
