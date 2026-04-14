@@ -1,14 +1,18 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useState ,useContext} from "react"
 import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
-import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 
 const Plant = () => {
+  const navigate = useNavigate();
   const [plant, setPlant] = useState([])
   const [loading,setLoading] = useState(true)
-  const {cart,setCart} = useContext(Globalcontext)
+  const {cart,setCart,login,userLoginData} = useContext(Globalcontext)
+  const [addedItems, setAddedItems] = useState({})
+
+ 
 
 
   const apidata = async () => {
@@ -32,12 +36,40 @@ const Plant = () => {
   }, [])
 
 
-  const addcart = () => {
-    setCart(prev => {
-      const updated = prev + 1
-      return updated
-    })
-  }
+  const addcart = async(product_id) => {
+      try{
+          if(!login){
+              navigate("/login")
+          }
+          else{
+              const payload = {
+                email:userLoginData.email,
+                product_id:[product_id]
+              }
+              const res = await axios.post("http://localhost:8000/data/cartdata",payload)
+              console.log(res)
+              setCart(res.data.data.product_id.length)
+            }
+  
+      }catch(error){
+        console.log("Error is ",error)
+      }
+      
+    }
+    
+    const cartcount = async () => {
+      try{
+          const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
+          console.log(data)
+          setCart(data.data.data.product_id.length)
+      }catch(error){
+        console.log("Error is ",error)
+      }
+    }
+  
+    useEffect(() => {
+      cartcount()
+    },[login,userLoginData])
 
 
    if (loading) {
@@ -84,10 +116,23 @@ const Plant = () => {
                 </button>
 
                 <button
-                  className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
-                  onClick={addcart}
+                  className={`px-4 py-2 rounded-lg transition ${addedItems[plant.product_id]
+                      ? "bg-green-500 text-white cursor-not-allowed"
+                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"}`
+                    }
+                  disabled={addedItems[plant.product_id]}
+                  onClick={async () => {
+                    if (addedItems[plant.product_id]) return;
+
+                    await addcart(plant.product_id);
+
+                    setAddedItems((prev) => ({
+                      ...prev,
+                      [plant.product_id]: true,
+                    }));
+                  }}
                 >
-                  Add to Cart
+                  {addedItems[plant.product_id] ? "Added ✅" : "Add to Cart"}
                 </button>
               </div>
 
