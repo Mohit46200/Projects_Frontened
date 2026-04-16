@@ -9,20 +9,14 @@ const Plant = () => {
   const navigate = useNavigate();
   const [plant, setPlant] = useState([])
   const [loading,setLoading] = useState(true)
-  const {cart,setCart,login,userLoginData} = useContext(Globalcontext)
+  const {setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
 
  
-
-
   const apidata = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/plant");
-
-    
+      const res = await axios.get("http://localhost:8000/plant")
       const dataArray = Object.values(res.data)
-      console.log(res.data)
-      console.log(dataArray)
       setPlant(dataArray)
       setLoading(false)
 
@@ -47,7 +41,6 @@ const Plant = () => {
                 product_id:[product_id]
               }
               const res = await axios.post("http://localhost:8000/data/cartdata",payload)
-              console.log(res)
               setCart(res.data.data.product_id.length)
             }
   
@@ -60,7 +53,7 @@ const Plant = () => {
     const cartcount = async () => {
       try{
           const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
-          console.log(data)
+          await setUserCartData(data.data.data)
           setCart(data.data.data.product_id.length)
       }catch(error){
         console.log("Error is ",error)
@@ -116,23 +109,23 @@ const Plant = () => {
                 </button>
 
                 <button
-                  className={`px-4 py-2 rounded-lg transition ${addedItems[plant.product_id]
-                      ? "bg-green-500 text-white cursor-not-allowed"
-                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"}`
+                  className={`px-4 py-2 rounded-lg transition ${userCartData?.product_id?.includes(plant.product_id)
+                      ? "bg-yellow-200 text-black cursor-not-allowed"
+                      : "bg-yellow-500 text-black hover:bg-yellow-450"}`
                     }
-                  disabled={addedItems[plant.product_id]}
+                  disabled={userCartData?.product_id?.includes(plant.product_id)}
                   onClick={async () => {
-                    if (addedItems[plant.product_id]) return;
-
-                    await addcart(plant.product_id);
-
+                    if (userCartData?.product_id?.includes(plant.product_id)) {
+                        return
+                    }
+                    await addcart(plant.product_id)
                     setAddedItems((prev) => ({
                       ...prev,
                       [plant.product_id]: true,
-                    }));
+                    }))
                   }}
                 >
-                  {addedItems[plant.product_id] ? "Added ✅" : "Add to Cart"}
+                  {addedItems[plant.product_id] || userCartData?.product_id?.includes(plant.product_id) ? "Added" : "Add to Cart"}
                 </button>
               </div>
 

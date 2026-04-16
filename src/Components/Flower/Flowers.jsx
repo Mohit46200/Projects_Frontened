@@ -8,16 +8,14 @@ const Flower = () => {
   const navigate = useNavigate();
   const [flowers, setFlowers] = useState([]);
   const [loading,setLoading] = useState(true)
-  const {cart,setCart,login,userLoginData} = useContext(Globalcontext)
+  const {cart,setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
+  const [addedItems, setAddedItems] = useState({})
+  
 
   const apidata = async () => {
     try {
- 
       const res = await axios.get("http://localhost:8000/flower")
-
       const dataArray = Object.values(res.data)
-      console.log(res.data)
-      console.log(dataArray)
       setFlowers(dataArray)
       setLoading(false)
     } catch (error) {
@@ -41,7 +39,6 @@ const Flower = () => {
               product_id:[product_id]
             }
             const res = await axios.post("http://localhost:8000/data/cartdata",payload)
-            console.log(res)
             setCart(res.data.data.product_id.length)
           }
 
@@ -54,7 +51,7 @@ const Flower = () => {
   const cartcount = async () => {
     try{
         const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
-        console.log(data)
+        setUserCartData(data.data.data)
         setCart(data.data.data.product_id.length)
     }catch(error){
       console.log("Error is ",error)
@@ -111,10 +108,23 @@ const Flower = () => {
                 </button>
 
                 <button
-                  className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
-                  onClick={() => addcart(flower.product_id)}
+                  className={`px-4 py-2 rounded-lg transition ${userCartData?.product_id?.includes(flower.product_id)
+                      ? "bg-yellow-200 text-black cursor-not-allowed"
+                      : "bg-yellow-500 text-black hover:bg-yellow-450"}`
+                    }
+                  disabled={userCartData?.product_id?.includes(flower.product_id)}
+                  onClick={async () => {
+                    if (userCartData?.product_id?.includes(flower.product_id)) {
+                        return
+                    }
+                    await addcart(flower.product_id)
+                    setAddedItems((prev) => ({
+                      ...prev,
+                      [flower.product_id]: true,
+                    }))
+                  }}
                 >
-                  Add to Cart
+                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id) ? "Added" : "Add to Cart"}
                 </button>
               </div>
             </div>
