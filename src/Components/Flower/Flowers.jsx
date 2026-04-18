@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState ,useContext } from "react";
 import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
-import { useNavigate } from "react-router-dom"
+import { useNavigate , useLocation} from "react-router-dom"
 
 
 const Flower = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const location = useLocation()
   const [flowers, setFlowers] = useState([]);
   const [loading,setLoading] = useState(true)
   const {cart,setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
@@ -31,7 +32,9 @@ const Flower = () => {
  const addcart = async(product_id) => {
     try{
         if(!login){
-            navigate("/login")
+            navigate("/login", {
+              state: {from: location.pathname}
+            })
         }
         else{
             const payload = {
@@ -108,11 +111,12 @@ const Flower = () => {
                 </button>
 
                 <button
-                  className={`px-4 py-2 rounded-lg transition ${userCartData?.product_id?.includes(flower.product_id)
+                  className={`px-4 py-2 rounded-lg transition 
+                    ${userCartData?.product_id?.includes(flower.product_id) || addedItems[flower.product_id]
                       ? "bg-yellow-200 text-black cursor-not-allowed"
                       : "bg-yellow-500 text-black hover:bg-yellow-450"}`
                     }
-                  disabled={userCartData?.product_id?.includes(flower.product_id)}
+                  disabled={userCartData?.product_id?.includes(flower.product_id) || addedItems[flower.product_id]}
                   onClick={async () => {
                     if (userCartData?.product_id?.includes(flower.product_id)) {
                         return
@@ -124,7 +128,7 @@ const Flower = () => {
                     }))
                   }}
                 >
-                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id) ? "Added" : "Add to Cart"}
+                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id) ? "Already Added" : "Add to Cart"}
                 </button>
               </div>
             </div>
@@ -134,4 +138,4 @@ const Flower = () => {
   )
 }
 
-export default Flower;
+export default Flower

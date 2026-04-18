@@ -1,10 +1,12 @@
 import { useEffect ,useContext} from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate , useLocation } from "react-router-dom"
 import { Globalcontext } from "../GlobalContext/globalcontext"
 
 const Login = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from || "/"
   const {login,setLogin, userLoginData,setUserLoginData} = useContext(Globalcontext)
 
 
@@ -13,12 +15,12 @@ const Login = () => {
     google.accounts.id.initialize({
       client_id: "347256781647-n12rvq41rtc7eqk1lr8hq77u03vi1niu.apps.googleusercontent.com",
       callback: handleCallback,
-    });
+    })
     console.log("2")
     google.accounts.id.renderButton(
       document.getElementById("googleBtn"),
       { theme: "outline", size: "large" }
-    );
+    )
     console.log("3")
   }, [])
 
@@ -38,7 +40,7 @@ const Login = () => {
       setLogin(true)
       setUserLoginData(res.data.user)
       console.log(res.data.user)
-    //   navigate("/dashboard")
+      navigate(from , {replace: true})
     } catch (err) {
       console.log(err);
     }

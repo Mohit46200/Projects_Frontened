@@ -1,12 +1,13 @@
 import axios from "axios"
 import { useEffect, useState ,useContext} from "react"
 import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
-import { useNavigate } from "react-router-dom"
+import { useNavigate  , useLocation} from "react-router-dom"
 
 
 
 const Plant = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const location = useLocation()
   const [plant, setPlant] = useState([])
   const [loading,setLoading] = useState(true)
   const {setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
@@ -33,7 +34,9 @@ const Plant = () => {
   const addcart = async(product_id) => {
       try{
           if(!login){
-              navigate("/login")
+              navigate("/login", {
+                state:{from : location.pathname}
+              })
           }
           else{
               const payload = {
@@ -109,11 +112,12 @@ const Plant = () => {
                 </button>
 
                 <button
-                  className={`px-4 py-2 rounded-lg transition ${userCartData?.product_id?.includes(plant.product_id)
+                  className={`px-4 py-2 rounded-lg transition 
+                    ${userCartData?.product_id?.includes(plant.product_id) || addedItems[plant.product_id]
                       ? "bg-yellow-200 text-black cursor-not-allowed"
                       : "bg-yellow-500 text-black hover:bg-yellow-450"}`
                     }
-                  disabled={userCartData?.product_id?.includes(plant.product_id)}
+                  disabled={userCartData?.product_id?.includes(plant.product_id) || addedItems[plant.product_id]}
                   onClick={async () => {
                     if (userCartData?.product_id?.includes(plant.product_id)) {
                         return
@@ -125,7 +129,7 @@ const Plant = () => {
                     }))
                   }}
                 >
-                  {addedItems[plant.product_id] || userCartData?.product_id?.includes(plant.product_id) ? "Added" : "Add to Cart"}
+                  {addedItems[plant.product_id] || userCartData?.product_id?.includes(plant.product_id) ? "Already Added" : "Add to Cart"}
                 </button>
               </div>
 
