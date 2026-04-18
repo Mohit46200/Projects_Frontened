@@ -51,7 +51,7 @@ const Flower = () => {
     
   }
   
-  const cartcount = async () => {
+  const cartdata = async () => {
     try{
         const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
         setUserCartData(data.data.data)
@@ -62,7 +62,7 @@ const Flower = () => {
   }
 
   useEffect(() => {
-    cartcount()
+    cartdata()
   },[login,userLoginData])
 
 

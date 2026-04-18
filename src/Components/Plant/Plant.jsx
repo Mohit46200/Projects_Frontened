@@ -10,7 +10,7 @@ const Plant = () => {
   const location = useLocation()
   const [plant, setPlant] = useState([])
   const [loading,setLoading] = useState(true)
-  const {setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
+  const {cart ,setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
 
  
@@ -53,7 +53,7 @@ const Plant = () => {
       
     }
     
-    const cartcount = async () => {
+    const cartdata = async () => {
       try{
           const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
           await setUserCartData(data.data.data)
@@ -64,7 +64,7 @@ const Plant = () => {
     }
   
     useEffect(() => {
-      cartcount()
+      cartdata()
     },[login,userLoginData])
 
 
@@ -140,4 +140,4 @@ const Plant = () => {
   )
 }
 
-export default Plant;
+export default Plant
