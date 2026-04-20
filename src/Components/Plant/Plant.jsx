@@ -123,10 +123,13 @@ const Plant = () => {
                         return
                     }
                     await addcart(plant.product_id)
-                    setAddedItems((prev) => ({
-                      ...prev,
-                      [plant.product_id]: true,
+                    if(login){
+                        setAddedItems((prev) => ({
+                          ...prev,
+                          [plant.product_id]: true,
                     }))
+                    }
+                    
                   }}
                 >
                   {addedItems[plant.product_id] || userCartData?.product_id?.includes(plant.product_id) ? "Already Added" : "Add to Cart"}

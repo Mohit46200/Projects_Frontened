@@ -80,7 +80,7 @@ const Flower = () => {
       </div>
     </div>
   )
-}
+};
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -118,17 +118,20 @@ const Flower = () => {
                     }
                   disabled={userCartData?.product_id?.includes(flower.product_id) || addedItems[flower.product_id]}
                   onClick={async () => {
-                    if (userCartData?.product_id?.includes(flower.product_id)) {
-                        return
-                    }
+                    // if (userCartData?.product_id?.includes(flower.product_id)) {
+                    //     return
+                    // }
                     await addcart(flower.product_id)
-                    setAddedItems((prev) => ({
-                      ...prev,
-                      [flower.product_id]: true,
+                    if(login){
+                        setAddedItems((prev) => ({
+                          ...prev,
+                          [flower.product_id]: true,
                     }))
+                    }
+                    
                   }}
                 >
-                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id) ? "Already Added" : "Add to Cart"}
+                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id)? "Already Added" : "Add to Cart"}
                 </button>
               </div>
             </div>
