@@ -141,4 +141,4 @@ const Flower = () => {
   )
 }
 
-export default Flower
+export default Flower;
