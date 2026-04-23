@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState ,useContext} from "react"
-import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
+import {Globalcontext} from "../../GlobalContext/globalcontext.jsx"
 import { useNavigate  , useLocation} from "react-router-dom"
 
 
