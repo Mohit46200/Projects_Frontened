@@ -15,7 +15,7 @@ const Flower = () => {
 
   const apidata = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/flower")
+      const res = await axios.get("https://projects-backend-6.onrender.com/flower")
       const dataArray = Object.values(res.data)
       setFlowers(dataArray)
       setLoading(false)
@@ -41,7 +41,7 @@ const Flower = () => {
               email:userLoginData.email,
               product_id:[product_id]
             }
-            const res = await axios.post("http://localhost:8000/data/cartdata",payload)
+            const res = await axios.post("https://projects-backend-6.onrender.com/data/cartdata",payload)
             setCart(res.data.data.product_id.length)
           }
 
@@ -53,7 +53,7 @@ const Flower = () => {
   
   const cartdata = async () => {
     try{
-        const data = await axios.get(`http://localhost:8000/data/cartcount/${userLoginData.email}`)
+        const data = await axios.get(`https://projects-backend-6.onrender.com/data/cartcount/${userLoginData.email}`)
         setUserCartData(data.data.data)
         setCart(data.data.data.product_id.length)
     }catch(error){

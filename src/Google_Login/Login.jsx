@@ -29,7 +29,7 @@ const Login = () => {
       console.log("4")
       console.log(response)
       const res = await axios.post(
-        "http://localhost:8000/auth/google",
+        "https://projects-backend-6.onrender.com/auth/google",
         {
           credential: response.credential,
         }
