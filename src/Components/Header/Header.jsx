@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom"
-import {Globalcontext} from "/home/mohit/Desktop/Coding/Projects/Project1/src/GlobalContext/globalcontext.jsx"
+import {Globalcontext} from "../../GlobalContext/globalcontext.jsx"
 import { useContext } from "react"
 
 
