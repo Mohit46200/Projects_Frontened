@@ -33,21 +33,32 @@ const Header = () => {
                 </div>
 
                 <div className="flex items-center space-x-2 cursor-pointer hover:text-black transition relative">
-                    <span className="font-bold">Basket</span>
+                    <Link
+                        to="/cart"
+                        className="flex items-center space-x-2 hover:text-black transition"
+                        >
+                        <span className="font-bold">Basket</span>
 
-                    <div className="relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-10" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M6 6h15l-1.5 9h-13z" />
-                        <circle cx="9" cy="20" r="1" />
-                        <circle cx="18" cy="20" r="1" />
-                    </svg>
+                        <div className="relative">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-8 w-10"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            >
+                            <path d="M6 6h15l-1.5 9h-13z" />
+                            <circle cx="9" cy="20" r="1" />
+                            <circle cx="18" cy="20" r="1" />
+                            </svg>
 
-                    {cart > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-md">
-                        {cart}
-                        </span>
-                    )}
-                    </div>
+                            {cart > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-md">
+                                {cart}
+                            </span>
+                            )}
+                        </div>
+                    </Link>
                 </div>
 
                 </div>
