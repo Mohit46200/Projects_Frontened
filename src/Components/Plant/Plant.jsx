@@ -8,9 +8,8 @@ import { useNavigate  , useLocation} from "react-router-dom"
 const Plant = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [plant, setPlant] = useState([])
   const [loading,setLoading] = useState(true)
-  const {cart ,setCart,login,userLoginData, userCartData, setUserCartData} = useContext(Globalcontext)
+  const {cart ,setCart,login,userLoginData, userCartData, setUserCartData, plant, setPlant} = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
 
  
