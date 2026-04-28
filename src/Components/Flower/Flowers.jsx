@@ -10,6 +10,7 @@ const Flower = () => {
   const [loading,setLoading] = useState(true)
   const {cart,setCart,login,userLoginData, userCartData, setUserCartData,flowers,setFlowers} = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
+  // const [clickedonAddtoCart,setClickedonAddtoCart] = useState(false)
   
 
   const apidata = async () => {
@@ -55,6 +56,7 @@ const Flower = () => {
         const data = await axios.get(`https://projects-backend-6.onrender.com/data/cartcount/${userLoginData.email}`)
         setUserCartData(data.data.data)
         setCart(data.data.data.product_id.length)
+        // setClickedonAddtoCart(false)
     }catch(error){
       console.log("Error is ",error)
     }
@@ -121,12 +123,14 @@ const Flower = () => {
                     //     return
                     // }
                     await addcart(flower.product_id)
+                    // await cartdata()
                     if(login){
                         setAddedItems((prev) => ({
                           ...prev,
                           [flower.product_id]: true,
-                    }))
+                        }))
                     }
+                    // await setClickedonAddtoCart(true)
                     
                   }}
                 >
@@ -140,4 +144,4 @@ const Flower = () => {
   )
 }
 
-export default Flower;
+export default Flower
