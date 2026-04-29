@@ -10,13 +10,13 @@ const Globalprovider = ({ children }) => {
   const [userCartData,setUserCartData] = useState({})
   const [flowers,setFlowers] = useState([])
   const [plant,setPlant] = useState([])
-
+  const [clickedonAddtoCart,setClickedonAddtoCart] = useState(false)
 
   
   return (
     <Globalcontext.Provider value={{ 
       cart, setCart, login, setLogin ,userLoginData , setUserLoginData,userCartData, setUserCartData, flowers, setFlowers,
-      plant, setPlant
+      plant, setPlant, clickedonAddtoCart, setClickedonAddtoCart
     }}>
       {children}
     </Globalcontext.Provider>

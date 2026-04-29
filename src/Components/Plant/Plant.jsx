@@ -9,7 +9,9 @@ const Plant = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [loading,setLoading] = useState(true)
-  const {cart ,setCart,login,userLoginData, userCartData, setUserCartData, plant, setPlant} = useContext(Globalcontext)
+  const {cart ,setCart,login,userLoginData, userCartData, setUserCartData, plant, setPlant,
+            clickedonAddtoCart, setClickedonAddtoCart
+        } = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
 
  
@@ -21,12 +23,12 @@ const Plant = () => {
       setLoading(false)
 
     } catch (error) {
-      console.log("Error is ", error);
+      console.log("Error is ", error)
     }
   }
 
   useEffect(() => {
-    apidata();
+    apidata()
   }, [])
 
 
@@ -57,6 +59,7 @@ const Plant = () => {
           const data = await axios.get(`https://projects-backend-6.onrender.com/data/cartcount/${userLoginData.email}`)
           await setUserCartData(data.data.data)
           setCart(data.data.data.product_id.length)
+          setClickedonAddtoCart(false)
       }catch(error){
         console.log("Error is ",error)
       }
@@ -64,7 +67,7 @@ const Plant = () => {
   
     useEffect(() => {
       cartdata()
-    },[login,userLoginData])
+    },[login,userLoginData,clickedonAddtoCart])
 
 
    if (loading) {
@@ -122,6 +125,7 @@ const Plant = () => {
                         return
                     }
                     await addcart(plant.product_id)
+                    setClickedonAddtoCart(true)
                     if(login){
                         setAddedItems((prev) => ({
                           ...prev,
