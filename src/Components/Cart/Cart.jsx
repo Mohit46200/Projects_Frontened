@@ -1,10 +1,11 @@
 import { Globalcontext } from "../../GlobalContext/globalcontext.jsx"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
+import {useNavigate} from "react-router-dom"
+
 
 const Cart = () => {
-  const { userCartData, flowers, plant } = useContext(Globalcontext)
-
-  
+  const { userCartData, flowers, plant, login } = useContext(Globalcontext)
+  const navigate = useNavigate()
   const allProducts = [
     ...Object.values(flowers || {}),
     ...Object.values(plant || {}),
@@ -16,6 +17,15 @@ const Cart = () => {
   )
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0)
+
+  useEffect(() => {
+      if(!login){
+          navigate("/login", {
+            state: {from: location.pathname}
+          })
+        }
+  },[])
+  
 
   return (
     <div className="min-h-screen bg-[#f6f3ee] px-8 py-12">
