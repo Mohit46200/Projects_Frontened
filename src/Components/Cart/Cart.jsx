@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom"
 
 
 const Cart = () => {
-  const { userCartData, flowers, plant, login } = useContext(Globalcontext)
+  const { userCartData, flowers, plant, login, setLogin, setUserLoginData } = useContext(Globalcontext)
   const navigate = useNavigate()
   const allProducts = [
     ...Object.values(flowers || {}),
@@ -26,6 +26,18 @@ const Cart = () => {
         }
   },[])
   
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    const user = localStorage.getItem("user")
+
+    if (token && user) {
+      setLogin(true)
+      setUserLoginData(JSON.parse(user));
+    }
+  }, [])
+
+
 
   return (
     <div className="min-h-screen bg-[#f6f3ee] px-8 py-12">

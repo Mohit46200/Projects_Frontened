@@ -1,8 +1,26 @@
 import homeImage from "../../Images/homeImage.jpg"
 import floom from "../../Images/floom.png"
 import floom2 from "../../Images/floom2.png"
+import { useEffect, useState ,useContext} from "react"
+import {Globalcontext} from "../../GlobalContext/globalcontext.jsx"
+
 
 const Home = () => {
+
+    const {setUserLoginData, setLogin} = useContext(Globalcontext)
+
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        const user = localStorage.getItem("user")
+    
+        if (token && user) {
+          setLogin(true)
+          setUserLoginData(JSON.parse(user));
+        }
+      }, [])
+
+
+
 
     return (
             <>

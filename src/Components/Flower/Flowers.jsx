@@ -9,7 +9,7 @@ const Flower = () => {
   const location = useLocation()
   const [loading,setLoading] = useState(true)
   const {cart,setCart,login,userLoginData, userCartData, setUserCartData,flowers,setFlowers,
-            clickedonAddtoCart,setClickedonAddtoCart
+            clickedonAddtoCart,setClickedonAddtoCart,setUserLoginData, setLogin
         } = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
   
@@ -67,6 +67,18 @@ const Flower = () => {
   useEffect(() => {
     cartdata()
   },[login,userLoginData,clickedonAddtoCart])
+
+
+  useEffect(() => {
+      const token = localStorage.getItem("token")
+      const user = localStorage.getItem("user")
+  
+      if (token && user) {
+        setLogin(true)
+        setUserLoginData(JSON.parse(user));
+      }
+    }, [])
+
 
 
   if (loading) {
