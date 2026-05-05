@@ -45,12 +45,13 @@ const Login = () => {
         }
       )
 
-     
+      console.log("google token is ",response.credential)
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
+      localStorage.setItem("user", JSON.stringify(res.data.decoded));
+      console.log("created token is", res.data.token)
+      console.log("Decoded data is ",res.data.decoded)
       setLogin(true);
-      setUserLoginData(res.data.user);
+      setUserLoginData(res.data.decoded);
 
       navigate(from, { replace: true });
     } catch (err) {
@@ -63,7 +64,7 @@ const Login = () => {
     
     localStorage.removeItem("token")
     localStorage.removeItem("user")
-
+    
     
     setLogin(false)
     setUserLoginData(null)
