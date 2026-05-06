@@ -5,6 +5,7 @@ import FlowerChild from "./Components/Flower/FlowerChild"
 import  PlantChild from "./Components/Plant/PlantChild"
 import Loginchild from "./Google_Login/Loginchild"
 import CartChild from "./Components/Cart/CartChild"
+import CheckoutChild from "./Components/Checkout/CheckoutChild"
 
 const Router = createBrowserRouter([
     {
@@ -19,7 +20,8 @@ const Router = createBrowserRouter([
             FlowerChild(),
             PlantChild(),
             Loginchild(),
-            CartChild()
+            CartChild(),
+            CheckoutChild()
         ]
     }
 
