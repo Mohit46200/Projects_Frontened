@@ -1,10 +1,10 @@
 import { Globalcontext } from "../../GlobalContext/globalcontext.jsx"
 import { useContext, useEffect } from "react"
-import {useNavigate} from "react-router-dom"
+import {useNavigate } from "react-router-dom"
 
 
 const Cart = () => {
-  const { userCartData, flowers, plant, login, setLogin, setUserLoginData } = useContext(Globalcontext)
+  const { userCartData, flowers, plant, login, setLogin, setUserLoginData, totalBill, setTotalBill} = useContext(Globalcontext)
   const navigate = useNavigate()
   const allProducts = [
     ...Object.values(flowers || {}),
@@ -16,7 +16,8 @@ const Cart = () => {
     userCartData?.product_id?.includes(item.product_id),
   )
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0)
+  setTotalBill( cartItems.reduce((sum, item) => sum + item.price, 0))
+  
 
   useEffect(() => {
       if(!login){
@@ -95,10 +96,13 @@ const Cart = () => {
 
             <div className="flex justify-between text-xl font-semibold mb-8">
               <span>Total</span>
-              <span>₹{totalPrice}</span>
+              <span>₹{totalBill}</span>
             </div>
 
-            <button className="w-full bg-black text-white py-4 rounded-full">
+            <button 
+            className="w-full bg-black text-white py-4 rounded-full"
+            onClick={() => navigate("/checkout")}
+            >
               Checkout
             </button>
           </div>
