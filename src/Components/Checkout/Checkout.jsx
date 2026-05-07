@@ -1,10 +1,11 @@
 import { Globalcontext } from "../../GlobalContext/globalcontext.jsx"
 import { useContext, useState } from "react"
+import axios from "axios"
 
 
 const Checkout = () => {
 
-   const {totalBill} = useContext(Globalcontext) 
+   const {totalBill, userCartData } = useContext(Globalcontext) 
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -19,18 +20,28 @@ const Checkout = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-
+    console.log(userCartData)
     if (
       !formData.name ||
       !formData.address ||
       !formData.phone
     ) {
       alert("All fields are compulsory!")
-      return;
+      return
     }
+    try{
+      const payload = {
+          email:userCartData.email,
+          details:formData,
+          product_id:userCartData.product_id
+      }
+      const res = await axios.post("https://projects-backend-5.onrender.com/check/checkout",payload)
 
+    }catch(error){
+      console.log("Error is checking out ",error)
+    }
     alert("Order Submitted Successfully!")
   }
 
