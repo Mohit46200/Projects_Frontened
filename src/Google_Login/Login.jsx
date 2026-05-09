@@ -8,7 +8,7 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from || "/";
 
-  const { login, setLogin, setUserLoginData } = useContext(Globalcontext);
+  const { login, setLogin, setUserLoginData, userLoginData } = useContext(Globalcontext);
 
   
   useEffect(() => {
@@ -46,45 +46,46 @@ const Login = () => {
       )
 
       console.log("google token is ",response.credential)
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.decoded));
+      localStorage.setItem("token", res.data.token)
+      localStorage.setItem("user", JSON.stringify(res.data.decoded))
       console.log("created token is", res.data.token)
       console.log("Decoded data is ",res.data.decoded)
-      setLogin(true);
-      setUserLoginData(res.data.decoded);
+      setLogin(true)
+      setUserLoginData(res.data.decoded)
 
       navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
     }
-  };
-
-  if (login) {
-  const handleLogout = () => {
-    
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    
-    
-    setLogin(false)
-    setUserLoginData(null)
   }
 
-  return (
-    <div className="flex flex-col items-center justify-center mt-10 gap-4">
-      <h1 className="text-black text-xl font-semibold">
-        You are logged in
-      </h1>
+  if (login) {
+        const handleLogout = () => {
+          
+          localStorage.removeItem("token")
+          localStorage.removeItem("user")
+          
+          
+          setLogin(false)
+          setUserLoginData(null)
 
-      <button
-        onClick={handleLogout}
-        className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-      >
-        Logout
-      </button>
-    </div>
-  )
-}
+        }
+
+      return (
+        <div className="flex flex-col items-center justify-center mt-10 gap-4">
+          <h1 className="text-black text-xl font-semibold">
+            You are logged in
+          </h1>
+
+          <button
+            onClick={handleLogout}
+            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
+        </div>
+      )
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">

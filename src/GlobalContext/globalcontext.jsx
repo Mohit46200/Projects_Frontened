@@ -12,6 +12,7 @@ const Globalprovider = ({ children }) => {
   const [plant,setPlant] = useState([])
   const [clickedonAddtoCart,setClickedonAddtoCart] = useState(false)
   const [totalBill, setTotalBill] = useState(0)
+ 
 
   
   return (
