@@ -133,12 +133,10 @@ const Flower = () => {
                     }
                   disabled={userCartData?.product_id?.includes(flower.product_id) || addedItems[flower.product_id]}
                   onClick={async () => {
-                    // if (userCartData?.product_id?.includes(flower.product_id)) {
-                    //     return
-                    // }
+                    
                     await addcart(flower.product_id)
                     setClickedonAddtoCart(true)
-                    // await cartdata()
+          
                     if(login){
                         setAddedItems((prev) => ({
                           ...prev,

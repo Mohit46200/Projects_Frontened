@@ -5,13 +5,13 @@ import axios from "axios"
 
 const Checkout = () => {
 
-   const {totalBill, userCartData } = useContext(Globalcontext) 
+   const {totalBill, userCartData , setUserCartData, setCart} = useContext(Globalcontext) 
   const [formData, setFormData] = useState({
     name: "",
     address: "",
     phone: "",
   })
-
+  const [delete_cart, setDelete_cart] = useState(true)
 
   const handleChange = (e) => {
     setFormData({
@@ -23,11 +23,7 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(userCartData)
-    if (
-      !formData.name ||
-      !formData.address ||
-      !formData.phone
-    ) {
+    if(!formData.name || !formData.address ||  !formData.phone){
       alert("All fields are compulsory!")
       return
     }
@@ -37,8 +33,14 @@ const Checkout = () => {
           details:formData,
           product_id:userCartData.product_id
       }
+      const payload2 = {
+        email:userCartData.email,
+        delete_cart:delete_cart
+      }
       const res = await axios.post("https://projects-backend-5.onrender.com/check/checkout",payload)
-
+      setUserCartData({})
+      const res2 = await axios.post("https://projects-backend-5.onrender.com/data/cartdata",payload2)
+      setCart(0)
     }catch(error){
       console.log("Error is checking out ",error)
     }
