@@ -1,6 +1,0 @@
-const CartChild = (old = {}) => {
-
-    return {
-        
-    }
-}

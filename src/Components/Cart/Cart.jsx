@@ -28,18 +28,6 @@ const Cart = () => {
   },[])
   
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    const user = localStorage.getItem("user")
-
-    if (token && user) {
-      setLogin(true)
-      setUserLoginData(JSON.parse(user));
-    }
-  }, [])
-
-
-
   return (
     <div className="min-h-screen bg-[#f6f3ee] px-8 py-12">
       <h1 className="text-5xl font-light text-center mb-12">Your Cart</h1>

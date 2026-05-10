@@ -7,21 +7,7 @@ import {Globalcontext} from "../../GlobalContext/globalcontext.jsx"
 
 const Home = () => {
 
-    const {setUserLoginData, setLogin} = useContext(Globalcontext)
-
-    useEffect(() => {
-        const token = localStorage.getItem("token")
-        const user = localStorage.getItem("user")
     
-        if (token && user) {
-          setLogin(true)
-          setUserLoginData(JSON.parse(user));
-        }
-      }, [])
-
-
-
-
     return (
             <>
                  <section className="relative w-full h-[500px] md:h-[600px]">

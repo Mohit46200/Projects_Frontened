@@ -7,30 +7,12 @@ import { useNavigate , useLocation} from "react-router-dom"
 const Flower = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [loading,setLoading] = useState(true)
   const {cart,setCart,login,userLoginData, userCartData, setUserCartData,flowers,setFlowers,
-            clickedonAddtoCart,setClickedonAddtoCart,setUserLoginData, setLogin
+            clickedonAddtoCart,setClickedonAddtoCart,setUserLoginData, setLogin,loading_F,setLoading_F
         } = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
   
   
-
-  const apidata = async () => {
-    try {
-      const res = await axios.get("https://projects-backend-6.onrender.com/flower")
-      const dataArray = Object.values(res.data)
-      setFlowers(dataArray)
-      setLoading(false)
-    } catch (error) {
-      console.log("Error is ", error)
-    }
-  }
-
-  useEffect(() => {
-    apidata()
-  }, [])
-
-
  const addcart = async(product_id) => {
     try{
         if(!login){
@@ -53,35 +35,8 @@ const Flower = () => {
     
   }
   
-  const cartdata = async () => {
-    try{
-        const data = await axios.get(`https://projects-backend-6.onrender.com/data/cartcount/${userLoginData.email}`)
-        setUserCartData(data.data.data)
-        setCart(data.data.data.product_id.length)
-        setClickedonAddtoCart(false)
-    }catch(error){
-      console.log("Error is ",error)
-    }
-  }
-
-  useEffect(() => {
-    cartdata()
-  },[login,userLoginData,clickedonAddtoCart])
-
-
-  useEffect(() => {
-      const token = localStorage.getItem("token")
-      const user = localStorage.getItem("user")
   
-      if (token && user) {
-        setLogin(true)
-        setUserLoginData(JSON.parse(user));
-      }
-    }, [])
-
-
-
-  if (loading) {
+  if (loading_F) {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
       <div className="flex flex-col items-center gap-4 p-8 bg-gray-800 rounded-2xl shadow-xl">
@@ -147,7 +102,7 @@ const Flower = () => {
                     
                   }}
                 >
-                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id)? "Already Added" : "Add to Cart"}
+                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id)? "Added successfully" : "Add to Cart"}
                 </button>
               </div>
             </div>

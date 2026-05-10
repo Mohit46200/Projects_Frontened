@@ -8,29 +8,11 @@ import { useNavigate  , useLocation} from "react-router-dom"
 const Plant = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [loading,setLoading] = useState(true)
   const {cart ,setCart,login,userLoginData, userCartData, setUserCartData, plant, setPlant,
-            clickedonAddtoCart, setClickedonAddtoCart, setUserLoginData, setLogin
+            clickedonAddtoCart, setClickedonAddtoCart, setUserLoginData, setLogin,
+            loading_P,setLoading_P
         } = useContext(Globalcontext)
   const [addedItems, setAddedItems] = useState({})
-
- 
-  const apidata = async () => {
-    try {
-      const res = await axios.get("https://projects-backend-6.onrender.com/plant")
-      const dataArray = Object.values(res.data)
-      setPlant(dataArray)
-      setLoading(false)
-
-    } catch (error) {
-      console.log("Error is ", error)
-    }
-  }
-
-  useEffect(() => {
-    apidata()
-  }, [])
-
 
   const addcart = async(product_id) => {
       try{
@@ -53,37 +35,8 @@ const Plant = () => {
       }
       
     }
-    
-    const cartdata = async () => {
-      try{
-          const data = await axios.get(`https://projects-backend-6.onrender.com/data/cartcount/${userLoginData.email}`)
-          await setUserCartData(data.data.data)
-          setCart(data.data.data.product_id.length)
-          setClickedonAddtoCart(false)
-      }catch(error){
-        console.log("Error is ",error)
-      }
-    }
   
-    useEffect(() => {
-      cartdata()
-    },[login,userLoginData,clickedonAddtoCart])
-
-
-
-    useEffect(() => {
-        const token = localStorage.getItem("token")
-        const user = localStorage.getItem("user")
-    
-        if (token && user) {
-          setLogin(true)
-          setUserLoginData(JSON.parse(user));
-        }
-      }, [])
-
-
-
-   if (loading) {
+   if (loading_P) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
         <div className="flex flex-col items-center gap-4 p-8 bg-gray-800 rounded-2xl shadow-xl">
