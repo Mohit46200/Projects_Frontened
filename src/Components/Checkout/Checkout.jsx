@@ -1,4 +1,4 @@
-import { Globalcontext } from "../../GlobalContext/globalcontext.jsx"
+import { Globalcontext } from "../../GlobalContext/globalcontext.jsx";
 import { useContext, useState, useEffect } from "react"
 import axios from "axios"
 
@@ -78,7 +78,7 @@ const Checkout = () => {
             setCart(0)
             alert("Order Submitted Successfully!")
           } catch (error) {
-            console.log("Error is checking out ", error)
+            console.log("Error is checking out ", error) 
           }
         }
 
