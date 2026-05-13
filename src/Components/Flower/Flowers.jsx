@@ -50,69 +50,114 @@ const Flower = () => {
       </div>
     </div>
   )
-};
+}
 
-  return (
-    <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {flowers.map((flower, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition duration-300"
-          >
-            <img
-              src={flower.image}
-              alt={flower.name}
-              className="w-full h-40 object-cover"
-            />
+            return (
+            <div className="bg-[#faf7f5] min-h-screen py-16 px-6">
+              <div className="max-w-7xl mx-auto">
+                <div className="mb-14 text-center">
+                  <span className="uppercase tracking-[0.3em] text-xs text-[#7b2140]">
+                    Floral Collection
+                  </span>
 
-            <div className="p-4 text-center">
-              <h2 className="text-lg font-semibold">{flower.name}</h2>
-              <p className="text-green-600 font-bold">₹{flower.price}</p>
-              <p className="text-gray-500 text-sm mb-4"> {flower.description}
-              </p>
+                  <h1 className="mt-4 text-4xl md:text-5xl font-serif text-gray-900">
+                    Luxury Flower Bouquets
+                  </h1>
 
-             
-              <div className="flex gap-2 justify-center">
-                <button
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                  onClick={() => navigate("/cart",{
-                    state: {product_id: flower.product_id}
-                    })
-                  }
-                >
-                  Buy Now
-                </button>
+                  <p className="mt-4 text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    Elegant handcrafted bouquets created with fresh seasonal flowers and
+                    designed to make every moment feel special.
+                  </p>
+                </div>
 
-                <button
-                  className={`px-4 py-2 rounded-lg transition 
-                    ${userCartData?.product_id?.includes(flower.product_id) || addedItems[flower.product_id]
-                      ? "bg-yellow-200 text-black cursor-not-allowed"
-                      : "bg-yellow-500 text-black hover:bg-yellow-450"}`
-                    }
-                  disabled={userCartData?.product_id?.includes(flower.product_id) || addedItems[flower.product_id]}
-                  onClick={async () => {
-                    
-                    await addcart(flower.product_id)
-                    setClickedonAddtoCart(true)
-          
-                    if(login){
-                        setAddedItems((prev) => ({
-                          ...prev,
-                          [flower.product_id]: true,
-                        }))
-                    }
-                   
-                    
-                  }}
-                >
-                  {addedItems[flower.product_id] || userCartData?.product_id?.includes(flower.product_id)? "Added successfully" : "Add to Cart"}
-                </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+                  {flowers.map((flower, index) => (
+                    <div
+                      key={index}
+                      className="group bg-white rounded-[32px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500"
+                    >
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={flower.image}
+                          alt={flower.name}
+                          className="w-full h-[320px] object-cover group-hover:scale-110 transition duration-700"
+                        />
+
+                        <div className="absolute top-5 left-5 bg-white/90 backdrop-blur-sm text-[#7b2140] text-xs px-4 py-2 rounded-full tracking-wide shadow">
+                          Signature Bouquet
+                        </div>
+                      </div>
+
+                      <div className="p-7">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h2 className="text-2xl font-serif text-gray-900 leading-snug">
+                              {flower.name}
+                            </h2>
+
+                            <p className="mt-3 text-gray-600 text-sm leading-relaxed">
+                              {flower.description}
+                            </p>
+                          </div>
+
+                          <div className="bg-[#f8ece8] text-[#7b2140] px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+                            ₹{flower.price}
+                          </div>
+                        </div>
+
+                        <div className="mt-8 flex gap-3">
+                          <button
+                            className="flex-1 bg-[#6b1d3a] text-white py-3 rounded-2xl hover:bg-[#571730] transition font-medium shadow-lg"
+                            onClick={() =>
+                              navigate("/cart", {
+                                state: { product_id: flower.product_id },
+                              })
+                            }
+                          >
+                            Buy Now
+                          </button>
+
+                          <button
+                            className={`flex-1 py-3 rounded-2xl transition font-medium border
+                              ${
+                                userCartData?.product_id?.includes(
+                                  flower.product_id
+                                ) || addedItems[flower.product_id]
+                                  ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                                  : "bg-[#f8ece8] text-[#7b2140] border-[#f1d7d0] hover:bg-[#f1d7d0]"
+                              }`}
+                            disabled={
+                              userCartData?.product_id?.includes(
+                                flower.product_id
+                              ) || addedItems[flower.product_id]
+                            }
+                            onClick={async () => {
+                              await addcart(flower.product_id)
+                              setClickedonAddtoCart(true)
+
+                              if (login) {
+                                setAddedItems((prev) => ({
+                                  ...prev,
+                                  [flower.product_id]: true,
+                                }))
+                              }
+                            }}
+                          >
+                            {addedItems[flower.product_id] ||
+                            userCartData?.product_id?.includes(
+                              flower.product_id
+                            )
+                              ? "Added successfully"
+                              : "Add to Cart"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-  )
+          )
 }
 
 export default Flower

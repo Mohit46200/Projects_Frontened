@@ -37,79 +37,148 @@ const Cart = () => {
   },[])
   
 
-  return (
-    <div className="min-h-screen bg-[#f6f3ee] px-8 py-12">
-      {product_id ? <h1 className="text-5xl font-light text-center mb-12">Your Order</h1>
-      : 
-      <h1 className="text-5xl font-light text-center mb-12">Your Cart</h1>}
-      
+ return (
+  <div className="min-h-screen bg-[#faf7f5] px-6 md:px-10 py-16">
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-16">
+        <span className="uppercase tracking-[0.3em] text-xs text-[#7b2140]">
+          Floral Checkout
+        </span>
+
+        {product_id ? (
+          <h1 className="mt-4 text-5xl md:text-6xl font-serif text-gray-900">
+            Your Order
+          </h1>
+        ) : (
+          <h1 className="mt-4 text-5xl md:text-6xl font-serif text-gray-900">
+            Your Cart
+          </h1>
+        )}
+
+        <p className="mt-5 text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Review your selected bouquets and premium floral arrangements before
+          proceeding to checkout.
+        </p>
+      </div>
 
       {cartItems.length === 0 ? (
-        <div className="text-center text-2xl text-gray-500">Cart is Empty</div>
+        <div className="bg-white border border-gray-100 rounded-[36px] shadow-sm py-24 text-center">
+          <div className="text-7xl mb-6">🛒</div>
+
+          <h2 className="text-3xl font-serif text-gray-900">
+            Your cart is empty
+          </h2>
+
+          <p className="mt-4 text-gray-500">
+            Add beautiful flowers and plants to continue shopping.
+          </p>
+        </div>
       ) : (
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10">
-          
-          <div className="md:col-span-2 space-y-6">
+        <div className="grid lg:grid-cols-3 gap-10">
+          <div className="lg:col-span-2 space-y-8">
             {cartItems.map((item) => (
               <div
                 key={item.product_id}
-                className="bg-white rounded-3xl shadow-md p-6 flex gap-6 items-center"
+                className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-500"
               >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-32 h-32 object-cover rounded-2xl"
-                />
+                <div className="flex flex-col md:flex-row gap-6 p-6">
+                  <div className="overflow-hidden rounded-[24px]">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full md:w-44 h-44 object-cover hover:scale-105 transition duration-700"
+                    />
+                  </div>
 
-                <div className="flex-1">
-                  <h2 className="text-2xl font-medium">{item.name}</h2>
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <span className="text-xs uppercase tracking-[0.25em] text-[#7b2140]">
+                            Premium Selection
+                          </span>
 
-                  <p className="text-gray-500 mt-2 text-sm">
-                    {item.description}
-                  </p>
+                          <h2 className="mt-3 text-3xl font-serif text-gray-900">
+                            {item.name}
+                          </h2>
+                        </div>
 
-                  <p className="text-xl font-semibold mt-4">₹{item.price}</p>
+                        <div className="bg-[#f8ece8] text-[#7b2140] px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+                          ₹{item.price}
+                        </div>
+                      </div>
+
+                      <p className="mt-5 text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-8 flex items-center justify-between">
+                      
+                      <button className="border border-gray-200 px-6 py-3 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition">
+                        Remove
+                      </button>
+                    </div>
+                  </div>
                 </div>
-
-                <button className="border px-5 py-2 rounded-full hover:bg-black hover:text-white transition">
-                  Remove
-                </button>
               </div>
             ))}
           </div>
 
-         
-          <div className="bg-white shadow-md rounded-3xl p-8 h-fit">
-            <h2 className="text-2xl mb-8">Order Summary</h2>
+          <div className="h-fit sticky top-10">
+            <div className="bg-white rounded-[36px] border border-gray-100 shadow-sm p-8">
+              <span className="uppercase tracking-[0.3em] text-xs text-[#7b2140]">
+                Summary
+              </span>
 
-            <div className="flex justify-between mb-4">
-              <span>Items</span>
-              <span>{cartItems.length}</span>
+              <h2 className="mt-4 text-3xl font-serif text-gray-900">
+                Order Summary
+              </h2>
+
+              <div className="mt-10 space-y-5">
+                <div className="flex justify-between text-gray-600">
+                  <span>Items</span>
+                  <span>{cartItems.length}</span>
+                </div>
+
+                <div className="flex justify-between text-gray-600">
+                  <span>Shipping</span>
+                  <span className="text-green-600 font-medium">Free</span>
+                </div>
+
+                <div className="flex justify-between text-gray-600">
+                  <span>Packaging</span>
+                  <span>Included</span>
+                </div>
+              </div>
+
+              <div className="my-8 border-t border-dashed border-gray-200" />
+
+              <div className="flex justify-between items-center">
+                <span className="text-lg text-gray-700">Total</span>
+
+                <span className="text-4xl font-serif text-[#7b2140]">
+                  ₹{totalBill}
+                </span>
+              </div>
+
+              <button
+                className="w-full mt-10 bg-[#6b1d3a] hover:bg-[#571730] text-white py-4 rounded-full text-lg font-medium shadow-xl transition"
+                onClick={() => navigate("/checkout")}
+              >
+                Proceed to Checkout
+              </button>
+
+              <p className="text-center text-xs text-gray-400 mt-5">
+                Secure floral checkout experience
+              </p>
             </div>
-
-            <div className="flex justify-between mb-4">
-              <span>Shipping</span>
-              <span>Free</span>
-            </div>
-
-            <hr className="my-6" />
-
-            <div className="flex justify-between text-xl font-semibold mb-8">
-              <span>Total</span>
-              <span>₹{totalBill}</span>
-            </div>
-
-            <button 
-            className="w-full bg-black text-white py-4 rounded-full"
-            onClick={() => navigate("/checkout")}
-            >
-              Checkout
-            </button>
           </div>
         </div>
       )}
     </div>
-  )
+  </div>
+)
 }
 
 export default Cart
