@@ -1,20 +1,29 @@
 import { Globalcontext } from "../../GlobalContext/globalcontext.jsx"
 import { useContext, useEffect } from "react"
-import {useNavigate } from "react-router-dom"
+import {useNavigate, useLocation } from "react-router-dom"
 
 
 const Cart = () => {
   const { userCartData, flowers, plant, login, setLogin, setUserLoginData, totalBill, setTotalBill} = useContext(Globalcontext)
   const navigate = useNavigate()
+  const location = useLocation()
+  const {product_id} = location.state || {}
   const allProducts = [
     ...Object.values(flowers || {}),
     ...Object.values(plant || {}),
   ]
-
- 
-  const cartItems = allProducts.filter((item) =>
-    userCartData?.product_id?.includes(item.product_id),
+  let cartItems = []
+  if(product_id){
+      cartItems = allProducts.filter(
+        (item) =>  item.product_id===product_id
+      )
+  }else{
+      cartItems = allProducts.filter((item) =>
+      userCartData?.product_id?.includes(item.product_id),
   )
+  }
+ 
+  
 
   setTotalBill( cartItems.reduce((sum, item) => sum + item.price, 0))
   
@@ -30,7 +39,10 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-[#f6f3ee] px-8 py-12">
-      <h1 className="text-5xl font-light text-center mb-12">Your Cart</h1>
+      {product_id ? <h1 className="text-5xl font-light text-center mb-12">Your Order</h1>
+      : 
+      <h1 className="text-5xl font-light text-center mb-12">Your Cart</h1>}
+      
 
       {cartItems.length === 0 ? (
         <div className="text-center text-2xl text-gray-500">Cart is Empty</div>
