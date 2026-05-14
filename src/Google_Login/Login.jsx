@@ -72,7 +72,11 @@ const Login = () => {
           <div className="min-h-screen bg-[#faf7f5] flex items-center justify-center px-6">
             <div className="bg-white border border-gray-100 shadow-xl rounded-[36px] p-12 max-w-md w-full text-center">
               <div className="w-24 h-24 mx-auto rounded-full bg-[#f8ece8] flex items-center justify-center text-4xl mb-8">
-                🌸
+                    <img
+                        src={userLoginData.picture}
+                        className="h-20 w-20 rounded-full object-cover border border-white shadow"
+                    />
+                 
               </div>
 
               <span className="uppercase tracking-[0.3em] text-xs text-[#7b2140]">
