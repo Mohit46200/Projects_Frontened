@@ -1,61 +1,52 @@
-  import { Globalcontext } from "../../GlobalContext/globalcontext.jsx"
-  import { useContext, useEffect, useState } from "react"
-  import {useNavigate, useLocation } from "react-router-dom"
-  import axios from "axios"
-  
+import { Globalcontext } from "../../GlobalContext/globalcontext.jsx";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
+      const Cart = () => {
+        const {userCartData,flowers,plant,login,setLogin,setUserLoginData,totalBill,setTotalBill} = useContext(Globalcontext);
+        const [remove, setRemove] = useState(true);
+        const navigate = useNavigate();
+        const location = useLocation();
+        const { product_id } = location.state || {};
+        const allProducts = [
+          ...Object.values(flowers || {}),
+          ...Object.values(plant || {}),
+        ];
+        let cartItems = [];
+        if (product_id) {
+          cartItems = allProducts.filter((item) => item.product_id === product_id);
+        } else {
+          cartItems = allProducts.filter((item) =>
+            userCartData?.product_id?.includes(item.product_id),
+          );
+        }
 
-  const Cart = () => {
-    const { userCartData, flowers, plant, login, setLogin, 
-            setUserLoginData, totalBill, setTotalBill} = useContext(Globalcontext)
-    const [remove,setRemove] = useState(true)
-    const navigate = useNavigate()
-    const location = useLocation()
-    const {product_id} = location.state || {}
-    const allProducts = [
-      ...Object.values(flowers || {}),
-      ...Object.values(plant || {}),
-    ]
-    let cartItems = []
-    if(product_id){
-        cartItems = allProducts.filter(
-          (item) =>  item.product_id===product_id
-        )
-    }else{
-        cartItems = allProducts.filter((item) =>
-        userCartData?.product_id?.includes(item.product_id),
-    )
-    }
-  
-    
+        setTotalBill(cartItems.reduce((sum, item) => sum + item.price, 0));
 
-    setTotalBill( cartItems.reduce((sum, item) => sum + item.price, 0))
-    
-
-    useEffect(() => {
-        if(!login){
+        useEffect(() => {
+          if (!login) {
             navigate("/login", {
-              state: {from: location.pathname}
+              state: { from: location.pathname },
             })
           }
-    },[])
+        }, [])
 
-
-
-
-    const remove_product = async(product_id) => {
-          try{
-              const payload = {
-                email:userCartData.email,
-                product_id: product_id,
-                remove:remove
-              }
-              const res = await axios.post("https://projects-backend-6.onrender.com/data/cartdata",payload) 
-          }catch(error){
-              console.log("Error in removing is ",error)
+        const remove_product = async (product_id) => {
+          try {
+            const payload = {
+              email: userCartData.email,
+              product_id: product_id,
+              remove: remove,
+            }
+            const res = await axios.post(
+              "https://projects-backend-6.onrender.com/data/cartdata",
+              payload,
+            )
+          } catch (error) {
+            console.log("Error in removing is ", error);
           }
-    }
-    
+        }
 
   return (
     <div className="min-h-screen bg-[#faf7f5] px-6 md:px-10 py-16">
@@ -134,10 +125,10 @@
                       </div>
 
                       <div className="mt-8 flex items-center justify-between">
-                        
-                        <button 
-                        onClick = {() => remove_product(item.product_id)}
-                        className="border border-gray-200 px-6 py-3 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition">
+                        <button
+                          onClick={() => remove_product(item.product_id)}
+                          className="border border-gray-200 px-6 py-3 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
+                        >
                           Remove
                         </button>
                       </div>
@@ -201,6 +192,6 @@
       </div>
     </div>
   )
-  }
+}
 
-  export default Cart
+export default Cart
