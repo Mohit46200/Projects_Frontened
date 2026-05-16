@@ -7,7 +7,7 @@ import axios from "axios";
         const {userCartData,flowers,plant,login,setLogin,setUserLoginData,totalBill,setTotalBill} = useContext(Globalcontext);
         const [remove, setRemove] = useState(true);
         const navigate = useNavigate();
-        const location = useLocation();
+        const location = useLocation()
         const { product_id } = location.state || {};
         const allProducts = [
           ...Object.values(flowers || {}),
