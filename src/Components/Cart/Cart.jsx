@@ -5,14 +5,14 @@ import axios from "axios";
 
       const Cart = () => {
         const {userCartData,flowers,plant,login,setLogin,setUserLoginData,totalBill,setTotalBill} = useContext(Globalcontext);
-        const [remove, setRemove] = useState(true);
-        const navigate = useNavigate();
+        const [remove, setRemove] = useState(true)
+        const navigate = useNavigate()
         const location = useLocation()
-        const { product_id } = location.state || {};
+        const { product_id } = location.state || {}
         const allProducts = [
           ...Object.values(flowers || {}),
           ...Object.values(plant || {}),
-        ];
+        ]
         let cartItems = [];
         if (product_id) {
           cartItems = allProducts.filter((item) => item.product_id === product_id);
