@@ -13,16 +13,16 @@ import axios from "axios";
           ...Object.values(flowers || {}),
           ...Object.values(plant || {}),
         ]
-        let cartItems = [];
+        let cartItems = []
         if (product_id) {
-          cartItems = allProducts.filter((item) => item.product_id === product_id);
+          cartItems = allProducts.filter((item) => item.product_id === product_id)
         } else {
           cartItems = allProducts.filter((item) =>
             userCartData?.product_id?.includes(item.product_id),
           );
         }
 
-        setTotalBill(cartItems.reduce((sum, item) => sum + item.price, 0));
+        setTotalBill(cartItems.reduce((sum, item) => sum + item.price, 0))
 
         useEffect(() => {
           if (!login) {
@@ -44,7 +44,7 @@ import axios from "axios";
               payload,
             )
           } catch (error) {
-            console.log("Error in removing is ", error);
+            console.log("Error in removing is ", error)
           }
         }
 
