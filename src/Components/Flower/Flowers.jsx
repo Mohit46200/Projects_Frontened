@@ -61,7 +61,7 @@ const Flower = () => {
                   </span>
 
                   <h1 className="mt-4 text-4xl md:text-5xl font-serif text-gray-900">
-                    Luxury Flower Bouquets
+                    Luxury Flowers
                   </h1>
 
                   <p className="mt-4 text-gray-600 max-w-2xl mx-auto leading-relaxed">
