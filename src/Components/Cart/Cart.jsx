@@ -11,7 +11,7 @@ import axios from "axios";
         const { product_id } = location.state || {}
         const allProducts = [
           ...Object.values(flowers || {}),
-          ...Object.values(plant || {}),
+          ...Object.values(plant || {})
         ]
         let cartItems = []
         if (product_id) {

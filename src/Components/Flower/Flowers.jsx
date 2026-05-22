@@ -37,20 +37,20 @@ const Flower = () => {
   
   
   if (loading_F) {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="flex flex-col items-center gap-4 p-8 bg-gray-800 rounded-2xl shadow-xl">
-        
-        <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
-        
-        <h1 className="text-white text-lg font-semibold tracking-wide">
-          Loading...
-        </h1>
-
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#faf7f5]">
+        <div className="flex flex-col items-center gap-4 p-8 bg-[#faf7f5] rounded-2xl shadow-xl">
+          
+          <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+          
+          <h1 className="text-black text-lg font-semibold tracking-wide">
+            Loading...
+          </h1>
+  
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
             return (
             <div className="bg-[#faf7f5] min-h-screen py-16 px-6">
