@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
       const Cart = () => {
-        const {userCartData,flowers,plant,login,setLogin,setUserLoginData,totalBill,setTotalBill} = useContext(Globalcontext);
+        const {userCartData, setUserCartData, setCart, flowers,plant,login,setLogin,userLoginData,totalBill,setTotalBill} = useContext(Globalcontext);
         const [remove, setRemove] = useState(true)
         const navigate = useNavigate()
         const location = useLocation()
@@ -19,7 +19,7 @@ import axios from "axios";
         } else {
           cartItems = allProducts.filter((item) =>
             userCartData?.product_id?.includes(item.product_id),
-          );
+          )
         }
 
         setTotalBill(cartItems.reduce((sum, item) => sum + item.price, 0))
@@ -39,10 +39,10 @@ import axios from "axios";
               product_id: product_id,
               remove: remove,
             }
-            const res = await axios.post(
-              "https://projects-backend-6.onrender.com/data/cartdata",
-              payload,
-            )
+            const res = await axios.post("https://projects-backend-6.onrender.com/data/cartdata",payload)
+            const data = await axios.get(`https://projects-backend-6.onrender.com/data/cartcount/${userLoginData.email}`)
+            setUserCartData(data.data.data)
+            setCart(data.data.data.product_id.length)
           } catch (error) {
             console.log("Error in removing is ", error)
           }
