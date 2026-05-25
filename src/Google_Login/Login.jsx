@@ -1,14 +1,14 @@
-import { useEffect, useContext } from "react";
-import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Globalcontext } from "../GlobalContext/globalcontext";
+import { useEffect, useContext } from "react"
+import axios from "axios"
+import { useNavigate, useLocation } from "react-router-dom"
+import { Globalcontext } from "../GlobalContext/globalcontext"
 
 const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from || "/";
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from || "/"
 
-  const { login, setLogin, setUserLoginData, userLoginData } = useContext(Globalcontext);
+  const {setCart, login, setLogin, setUserLoginData, userLoginData } = useContext(Globalcontext);
 
   
   useEffect(() => {
@@ -66,6 +66,7 @@ const Login = () => {
 
           setLogin(false)
           setUserLoginData(null)
+          setCart(0)
         }
 
         return (

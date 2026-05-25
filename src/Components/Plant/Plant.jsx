@@ -17,6 +17,7 @@ const Plant = () => {
   const addcart = async(product_id) => {
       try{
           if(!login){
+            alert("Please Login to add products into cart")
               navigate("/login", {
                 state:{from : location.pathname}
               })
@@ -35,6 +36,24 @@ const Plant = () => {
       }
       
     }
+
+
+    const buynow = (product_id) => {
+        if(!login){
+            alert("Please Login to buy product")
+              navigate("/login", {
+                state:{from : location.pathname}
+              })
+          }
+        else{
+          navigate("/cart", {
+            state: { product_id: product_id },
+          })
+        }
+          
+
+    }
+
   
    if (loading_P) {
     return (
@@ -109,11 +128,7 @@ const Plant = () => {
                       <div className="mt-8 flex gap-3">
                         <button
                           className="flex-1 bg-[#6b1d3a] text-white py-3 rounded-2xl hover:bg-[#571730] transition font-medium shadow-lg"
-                          onClick={() =>
-                            navigate("/cart", {
-                              state: { product_id: plant.product_id },
-                            })
-                          }
+                          onClick={() => buynow(plant.product_id)}
                         >
                           Buy Now
                         </button>
@@ -156,7 +171,7 @@ const Plant = () => {
                           userCartData?.product_id?.includes(
                             plant.product_id
                           )
-                            ? "Already Added"
+                            ? "Added"
                             : "Add to Cart"}
                         </button>
                       </div>

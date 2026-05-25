@@ -26,6 +26,7 @@ import axios from "axios";
 
         useEffect(() => {
           if (!login) {
+            alert("Please Login to see cart")
             navigate("/login", {
               state: { from: location.pathname },
             })

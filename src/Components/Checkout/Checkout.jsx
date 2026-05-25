@@ -11,6 +11,7 @@ const Checkout = () => {
           address: "",
           phone: "",
         })
+        const [loading, setLoading] = useState(true)
 
         const [delete_cart, setDelete_cart] = useState(true)
         const handleChange = (e) => {
@@ -29,6 +30,9 @@ const Checkout = () => {
             console.log("fuck")
             console.log(res.data.details)
             setDetails(res.data.details)
+            if(!details) {
+              setLoading(false)
+            }
           } catch (error) {
             console.log("Error in posting is ", error)
           }
@@ -46,6 +50,7 @@ const Checkout = () => {
               address: details.address ,
               phone: details.phone ,
             })
+            setLoading(false)
           }
 
         }, [details])
@@ -81,6 +86,25 @@ const Checkout = () => {
             console.log("Error is checking out ", error) 
           }
         }
+        
+
+        if(loading){
+          return (
+              <div className="flex items-center justify-center min-h-screen bg-[#faf7f5]">
+                <div className="flex flex-col items-center gap-4 p-8 bg-[#faf7f5] rounded-2xl shadow-xl">
+                  
+                  <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+                  
+                  <h1 className="text-black text-lg font-semibold tracking-wide">
+                    Loading...
+                  </h1>
+          
+                </div>
+              </div>
+            )
+        }
+
+
 
         return (
           <div className="min-h-screen bg-[#faf7f5] py-16 px-6 md:px-10">
