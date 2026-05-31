@@ -125,13 +125,21 @@ import axios from "axios";
                         </p>
                       </div>
 
-                      <div className="mt-8 flex items-center justify-between">
+                      <div className="mt-8 flex ">
                         <button
                           onClick={() => remove_product(item.product_id)}
-                          className="border border-gray-200 px-6 py-3 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
+                          className="m-1 border border-gray-200 px-6 py-3 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
                         >
                           Remove
                         </button>
+                        <button
+                          className="m-1 border border-gray-200 px-6 py-4 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
+                        >
+                          +</button>
+                        <button
+                          className="m-1 border border-gray-200 px-6 py-4 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
+                        >
+                          -</button>
                       </div>
                     </div>
                   </div>
