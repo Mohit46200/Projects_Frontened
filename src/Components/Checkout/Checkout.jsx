@@ -4,7 +4,7 @@ import axios from "axios"
 
 const Checkout = () => {
 
-        const {totalBill,userCartData,setUserCartData,setCart,userLoginData} = useContext(Globalcontext)
+        const {totalBill, setTotalBill,userCartData,setUserCartData,setCart,userLoginData} = useContext(Globalcontext)
         const [details, setDetails] = useState({})
         const [formData, setFormData] = useState({
           name: "",
@@ -81,6 +81,7 @@ const Checkout = () => {
             const res2 = await axios.post("https://projects-backend-5.onrender.com/data/cartdata",payload2)
             console.log(res2.data)
             setCart(0)
+            setTotalBill(0)
             alert("Order Submitted Successfully!")
           } catch (error) {
             console.log("Error is checking out ", error) 
