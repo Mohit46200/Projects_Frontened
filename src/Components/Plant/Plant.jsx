@@ -86,7 +86,7 @@ const Plant = () => {
 
                 <p className="mt-4 text-gray-600 max-w-2xl mx-auto leading-relaxed">
                   Handpicked indoor and outdoor plants designed to bring freshness,
-                  calmness and elegance into your space.
+                  calmness,possitivity and elegance into your space.
                 </p>
               </div>
 
@@ -185,3 +185,4 @@ const Plant = () => {
 }
 
 export default Plant
+
