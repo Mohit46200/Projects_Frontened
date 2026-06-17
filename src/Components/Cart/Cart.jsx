@@ -132,7 +132,15 @@ import axios from "axios";
                         >
                           Remove
                         </button>
-                                             </div>
+                        {/* <button
+                          className="m-1 border border-gray-200 px-6 py-4 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
+                        >
+                          +</button>
+                        <button
+                          className="m-1 border border-gray-200 px-6 py-4 rounded-full text-sm hover:bg-[#6b1d3a] hover:text-white hover:border-[#6b1d3a] transition"
+                        >
+                          -</button> */}
+                      </div>
                     </div>
                   </div>
                 </div>
