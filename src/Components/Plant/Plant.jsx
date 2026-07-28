@@ -65,6 +65,7 @@ const Plant = () => {
           <h1 className="text-black text-lg font-semibold tracking-wide">
             Loading...
           </h1>
+          <h6>Backend is uploaded on render , it will take around 1 minute</h6>
   
         </div>
       </div>
