@@ -9,7 +9,7 @@ import { ToastProvider } from './Components/Toast/ToastContext.jsx'
 
 createRoot(document.getElementById('root')).render(
 
-   <GoogleOAuthProvider clientId="YOUR_CLIENT_ID">
+   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <ToastProvider>
         <Globalprovider>
               <RouterProvider router= {Router} />
