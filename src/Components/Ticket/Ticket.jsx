@@ -41,6 +41,9 @@ function Ticket() {
   const [updatingStatus, setUpdatingStatus] =
     useState(null);
 
+  // Loading state for fetching tickets/users
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -54,6 +57,8 @@ function Ticket() {
   ====================================================== */
 
   const loadData = async () => {
+    setIsLoadingData(true);
+
     try {
       const [
         ticketResponse,
@@ -70,6 +75,12 @@ function Ticket() {
         "Error loading data:",
         error
       );
+
+      alert(
+        "Failed to load tickets. Please try again."
+      );
+    } finally {
+      setIsLoadingData(false);
     }
   };
 
@@ -256,6 +267,31 @@ function Ticket() {
 
   return (
     <div className="min-h-screen w-full bg-white text-gray-900 flex">
+
+      {/* =====================================================
+          LOADING OVERLAY
+      ====================================================== */}
+
+      {isLoadingData && (
+        <div className="fixed inset-0 z-[100] bg-white/90 backdrop-blur-sm flex items-center justify-center">
+
+          <div className="flex flex-col items-center justify-center text-center">
+
+            {/* Spinner */}
+            <div className="w-10 h-10 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin mb-4" />
+
+            <h2 className="text-lg font-semibold text-gray-900">
+              Please wait
+            </h2>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Loading tickets from database...
+            </p>
+
+          </div>
+
+        </div>
+      )}
 
       {/* =====================================================
           SIDEBAR
@@ -917,7 +953,7 @@ function Ticket() {
                       event.target.value,
                   })
                 }
-                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 disabled:bg-gray-50 disabled:text-gray-400"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-300 disabled:bg-gray-50 disabled:text-gray-400"
               />
 
               {/* CREATE BUTTON */}
@@ -1326,7 +1362,7 @@ function TicketDetails({
 
               const isDisabled =
                 updatingStatus !==
-                null ||
+                  null ||
                 ticket.status ===
                   status;
 
