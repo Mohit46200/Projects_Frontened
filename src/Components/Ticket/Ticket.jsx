@@ -14,7 +14,12 @@ const STATUS = [
   "BLOCKED",
 ];
 
-const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "URGENT"];
+const PRIORITIES = [
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "URGENT",
+];
 
 function Ticket() {
   const [tickets, setTickets] = useState([]);
@@ -25,8 +30,16 @@ function Ticket() {
 
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("ALL");
-  const [filterDeveloper, setFilterDeveloper] = useState("ALL");
-  const [activePage, setActivePage] = useState("dashboard");
+  const [filterDeveloper, setFilterDeveloper] =
+    useState("ALL");
+
+  const [activePage, setActivePage] =
+    useState("dashboard");
+
+  // Loading states
+  const [isCreating, setIsCreating] = useState(false);
+  const [updatingStatus, setUpdatingStatus] =
+    useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -36,20 +49,27 @@ function Ticket() {
     dueDate: "",
   });
 
-  /* ================= LOAD DATA ================= */
+  /* =====================================================
+     LOAD DATA
+  ====================================================== */
 
   const loadData = async () => {
     try {
-      const [ticketResponse, userResponse] =
-        await Promise.all([
-          getTickets(),
-          getUsers(),
-        ]);
+      const [
+        ticketResponse,
+        userResponse,
+      ] = await Promise.all([
+        getTickets(),
+        getUsers(),
+      ]);
 
       setTickets(ticketResponse.data);
       setUsers(userResponse.data);
     } catch (error) {
-      console.error("Error loading data:", error);
+      console.error(
+        "Error loading data:",
+        error
+      );
     }
   };
 
@@ -57,17 +77,22 @@ function Ticket() {
     loadData();
   }, []);
 
-  /* ================= DEVELOPERS ================= */
+  /* =====================================================
+     DEVELOPERS
+  ====================================================== */
 
   const developers = users.filter(
     (user) => user.role === "DEVELOPER"
   );
 
-  /* ================= FILTER TICKETS ================= */
+  /* =====================================================
+     FILTER TICKETS
+  ====================================================== */
 
   const filteredTickets = useMemo(() => {
     return tickets.filter((ticket) => {
-      const searchValue = search.toLowerCase();
+      const searchValue =
+        search.toLowerCase();
 
       const matchesSearch =
         ticket.title
@@ -87,7 +112,8 @@ function Ticket() {
 
       const matchesDeveloper =
         filterDeveloper === "ALL" ||
-        assignedDeveloperId === filterDeveloper;
+        assignedDeveloperId ===
+          filterDeveloper;
 
       return (
         matchesSearch &&
@@ -102,32 +128,44 @@ function Ticket() {
     filterDeveloper,
   ]);
 
-  /* ================= STATS ================= */
+  /* =====================================================
+     STATS
+  ====================================================== */
 
   const stats = {
     total: tickets.length,
 
     open: tickets.filter(
-      (ticket) => ticket.status === "OPEN"
+      (ticket) =>
+        ticket.status === "OPEN"
     ).length,
 
     progress: tickets.filter(
-      (ticket) => ticket.status === "IN_PROGRESS"
+      (ticket) =>
+        ticket.status === "IN_PROGRESS"
     ).length,
 
     completed: tickets.filter(
-      (ticket) => ticket.status === "COMPLETED"
+      (ticket) =>
+        ticket.status === "COMPLETED"
     ).length,
 
     blocked: tickets.filter(
-      (ticket) => ticket.status === "BLOCKED"
+      (ticket) =>
+        ticket.status === "BLOCKED"
     ).length,
   };
 
-  /* ================= CREATE TICKET ================= */
+  /* =====================================================
+     CREATE TICKET
+  ====================================================== */
 
   const handleCreate = async (event) => {
     event.preventDefault();
+
+    if (isCreating) return;
+
+    setIsCreating(true);
 
     try {
       const teamLeader = users.find(
@@ -158,17 +196,33 @@ function Ticket() {
 
       await loadData();
     } catch (error) {
-      console.error("Error creating ticket:", error);
+      console.error(
+        "Error creating ticket:",
+        error
+      );
+
       alert("Failed to create ticket.");
+    } finally {
+      setIsCreating(false);
     }
   };
 
-  /* ================= CHANGE STATUS ================= */
+  /* =====================================================
+     CHANGE STATUS
+  ====================================================== */
 
   const changeStatus = async (
     ticket,
     status
   ) => {
+    // Prevent multiple requests
+    if (updatingStatus) return;
+
+    // Don't update if already on this status
+    if (ticket.status === status) return;
+
+    setUpdatingStatus(status);
+
     try {
       await updateTicket(ticket._id, {
         status,
@@ -176,21 +230,27 @@ function Ticket() {
 
       await loadData();
 
-      const response = await getTickets();
+      const response =
+        await getTickets();
 
       const updatedTicket =
         response.data.find(
-          (item) => item._id === ticket._id
+          (item) =>
+            item._id === ticket._id
         );
 
       if (updatedTicket) {
-        setSelectedTicket(updatedTicket);
+        setSelectedTicket(
+          updatedTicket
+        );
       }
     } catch (error) {
       console.error(
         "Error updating status:",
         error
       );
+    } finally {
+      setUpdatingStatus(null);
     }
   };
 
@@ -228,6 +288,7 @@ function Ticket() {
         <nav className="flex flex-col gap-1">
 
           <button
+            type="button"
             className={`text-left px-3 py-3 rounded-lg transition ${
               activePage === "dashboard"
                 ? "bg-gray-100 text-gray-900 font-medium"
@@ -241,6 +302,7 @@ function Ticket() {
           </button>
 
           <button
+            type="button"
             className={`text-left px-3 py-3 rounded-lg transition ${
               activePage === "tickets"
                 ? "bg-gray-100 text-gray-900 font-medium"
@@ -254,6 +316,7 @@ function Ticket() {
           </button>
 
           <button
+            type="button"
             className={`text-left px-3 py-3 rounded-lg transition ${
               activePage === "developers"
                 ? "bg-gray-100 text-gray-900 font-medium"
@@ -268,10 +331,13 @@ function Ticket() {
 
         </nav>
 
-        {/* CREATE BUTTON */}
+        {/* CREATE TICKET */}
 
         <button
-          onClick={() => setShowCreate(true)}
+          type="button"
+          onClick={() =>
+            setShowCreate(true)
+          }
           className="mt-6 w-full py-3 rounded-lg bg-gray-900 text-white font-semibold hover:bg-gray-800 transition"
         >
           + Create Ticket
@@ -300,7 +366,7 @@ function Ticket() {
       </aside>
 
       {/* =====================================================
-          MAIN CONTENT
+          MAIN
       ====================================================== */}
 
       <main className="flex-1 min-w-0 bg-white p-8 lg:p-10">
@@ -312,7 +378,8 @@ function Ticket() {
           <div>
 
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {activePage === "dashboard"
+              {activePage ===
+              "dashboard"
                 ? "Dashboard"
                 : activePage === "tickets"
                 ? "Tickets"
@@ -320,13 +387,17 @@ function Ticket() {
             </h1>
 
             <p className="text-gray-500 mt-2 text-sm">
-              Manage your team's work and tasks.
+              Manage your team's work and
+              tasks.
             </p>
 
           </div>
 
           <button
-            onClick={() => setShowCreate(true)}
+            type="button"
+            onClick={() =>
+              setShowCreate(true)
+            }
             className="bg-gray-900 text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
           >
             + New Ticket
@@ -381,7 +452,8 @@ function Ticket() {
                 const columnTickets =
                   filteredTickets.filter(
                     (ticket) =>
-                      ticket.status === status
+                      ticket.status ===
+                      status
                   );
 
                 return (
@@ -390,21 +462,21 @@ function Ticket() {
                     className="min-h-[500px] bg-gray-50 border border-gray-200 rounded-xl p-3"
                   >
 
-                    {/* COLUMN HEADER */}
-
                     <div className="flex items-center justify-between mb-3 px-1">
 
                       <h3 className="text-sm font-semibold text-gray-800">
-                        {formatStatus(status)}
+                        {formatStatus(
+                          status
+                        )}
                       </h3>
 
                       <span className="bg-gray-200 text-gray-600 px-2 py-1 rounded-full text-[11px]">
-                        {columnTickets.length}
+                        {
+                          columnTickets.length
+                        }
                       </span>
 
                     </div>
-
-                    {/* TICKETS */}
 
                     {columnTickets.map(
                       (ticket) => (
@@ -430,7 +502,7 @@ function Ticket() {
         )}
 
         {/* =====================================================
-            TICKETS PAGE
+            TICKETS
         ====================================================== */}
 
         {activePage === "tickets" && (
@@ -470,7 +542,9 @@ function Ticket() {
                     key={status}
                     value={status}
                   >
-                    {formatStatus(status)}
+                    {formatStatus(
+                      status
+                    )}
                   </option>
                 ))}
 
@@ -509,7 +583,8 @@ function Ticket() {
 
             <div className="flex flex-col gap-2">
 
-              {filteredTickets.length === 0 ? (
+              {filteredTickets.length ===
+              0 ? (
 
                 <div className="bg-white border border-gray-200 rounded-xl p-10 text-center text-gray-500">
                   No tickets found.
@@ -539,10 +614,11 @@ function Ticket() {
         )}
 
         {/* =====================================================
-            DEVELOPERS PAGE
+            DEVELOPERS
         ====================================================== */}
 
-        {activePage === "developers" && (
+        {activePage ===
+          "developers" && (
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 
             {developers.map(
@@ -586,6 +662,7 @@ function Ticket() {
                     <div className="flex gap-10 mt-6">
 
                       <div>
+
                         <strong className="block text-xl text-gray-900">
                           {
                             developerTickets.length
@@ -595,6 +672,7 @@ function Ticket() {
                         <span className="text-[10px] text-gray-500">
                           Tickets
                         </span>
+
                       </div>
 
                       <div>
@@ -602,7 +680,9 @@ function Ticket() {
                         <strong className="block text-xl text-gray-900">
                           {
                             developerTickets.filter(
-                              (ticket) =>
+                              (
+                                ticket
+                              ) =>
                                 ticket.status ===
                                 "COMPLETED"
                             ).length
@@ -635,6 +715,7 @@ function Ticket() {
         <div
           className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
           onClick={() =>
+            !isCreating &&
             setShowCreate(false)
           }
         >
@@ -646,7 +727,7 @@ function Ticket() {
             }
           >
 
-            {/* MODAL HEADER */}
+            {/* HEADER */}
 
             <div className="flex items-start justify-between mb-6">
 
@@ -657,23 +738,32 @@ function Ticket() {
                 </h2>
 
                 <p className="text-xs text-gray-500 mt-1">
-                  Assign a new task to a developer.
+                  Assign a new task to a
+                  developer.
                 </p>
 
               </div>
 
               <button
+                type="button"
+                disabled={isCreating}
                 onClick={() =>
                   setShowCreate(false)
                 }
-                className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition text-xl"
+                className={`w-8 h-8 rounded-lg text-xl transition ${
+                  isCreating
+                    ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+                    : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                }`}
               >
                 ×
               </button>
 
             </div>
 
-            <form onSubmit={handleCreate}>
+            <form
+              onSubmit={handleCreate}
+            >
 
               {/* TITLE */}
 
@@ -683,15 +773,17 @@ function Ticket() {
 
               <input
                 required
+                disabled={isCreating}
                 value={form.title}
                 onChange={(event) =>
                   setForm({
                     ...form,
-                    title: event.target.value,
+                    title:
+                      event.target.value,
                   })
                 }
                 placeholder="Fix login authentication"
-                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-300"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-300 disabled:bg-gray-50 disabled:text-gray-400"
               />
 
               {/* DESCRIPTION */}
@@ -702,6 +794,7 @@ function Ticket() {
 
               <textarea
                 required
+                disabled={isCreating}
                 value={form.description}
                 onChange={(event) =>
                   setForm({
@@ -711,7 +804,7 @@ function Ticket() {
                   })
                 }
                 placeholder="Describe the task..."
-                className="w-full min-h-[120px] resize-y bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-300"
+                className="w-full min-h-[120px] resize-y bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-300 disabled:bg-gray-50 disabled:text-gray-400"
               />
 
               {/* ASSIGN + PRIORITY */}
@@ -728,7 +821,10 @@ function Ticket() {
 
                   <select
                     required
-                    value={form.assignedTo}
+                    disabled={isCreating}
+                    value={
+                      form.assignedTo
+                    }
                     onChange={(event) =>
                       setForm({
                         ...form,
@@ -736,7 +832,7 @@ function Ticket() {
                           event.target.value,
                       })
                     }
-                    className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500"
+                    className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 disabled:bg-gray-50 disabled:text-gray-400"
                   >
 
                     <option value="">
@@ -746,10 +842,16 @@ function Ticket() {
                     {developers.map(
                       (developer) => (
                         <option
-                          key={developer._id}
-                          value={developer._id}
+                          key={
+                            developer._id
+                          }
+                          value={
+                            developer._id
+                          }
                         >
-                          {developer.name}
+                          {
+                            developer.name
+                          }
                         </option>
                       )
                     )}
@@ -767,7 +869,10 @@ function Ticket() {
                   </label>
 
                   <select
-                    value={form.priority}
+                    disabled={isCreating}
+                    value={
+                      form.priority
+                    }
                     onChange={(event) =>
                       setForm({
                         ...form,
@@ -775,7 +880,7 @@ function Ticket() {
                           event.target.value,
                       })
                     }
-                    className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500"
+                    className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 disabled:bg-gray-50 disabled:text-gray-400"
                   >
 
                     {PRIORITIES.map(
@@ -803,6 +908,7 @@ function Ticket() {
 
               <input
                 type="date"
+                disabled={isCreating}
                 value={form.dueDate}
                 onChange={(event) =>
                   setForm({
@@ -811,16 +917,29 @@ function Ticket() {
                       event.target.value,
                   })
                 }
-                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 disabled:bg-gray-50 disabled:text-gray-400"
               />
 
-              {/* SUBMIT */}
+              {/* CREATE BUTTON */}
 
               <button
                 type="submit"
-                className="w-full mt-6 bg-gray-900 text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition"
+                disabled={isCreating}
+                className={`w-full mt-6 py-3 rounded-lg font-bold transition flex items-center justify-center gap-2 ${
+                  isCreating
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-gray-900 text-white hover:bg-gray-800"
+                }`}
               >
-                Create Ticket
+
+                {isCreating && (
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                )}
+
+                {isCreating
+                  ? "Creating..."
+                  : "Create Ticket"}
+
               </button>
 
             </form>
@@ -837,11 +956,16 @@ function Ticket() {
       {selectedTicket && (
         <TicketDetails
           ticket={selectedTicket}
-          developers={developers}
           onClose={() =>
+            updatingStatus === null &&
             setSelectedTicket(null)
           }
-          onStatusChange={changeStatus}
+          onStatusChange={
+            changeStatus
+          }
+          updatingStatus={
+            updatingStatus
+          }
         />
       )}
 
@@ -850,10 +974,13 @@ function Ticket() {
 }
 
 /* =========================================================
-   STAT CARD
+   STAT
 ========================================================= */
 
-function Stat({ title, value }) {
+function Stat({
+  title,
+  value,
+}) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
 
@@ -883,7 +1010,8 @@ function TicketCard({
     MEDIUM:
       "bg-yellow-50 text-yellow-700 border border-yellow-100",
 
-    HIGH: "bg-orange-50 text-orange-700 border border-orange-100",
+    HIGH:
+      "bg-orange-50 text-orange-700 border border-orange-100",
 
     URGENT:
       "bg-red-50 text-red-700 border border-red-100",
@@ -952,12 +1080,14 @@ function TicketRow({
   onClick,
 }) {
   const priorityStyles = {
-    LOW: "bg-green-50 text-green-700 border border-green-100",
+    LOW:
+      "bg-green-50 text-green-700 border border-green-100",
 
     MEDIUM:
       "bg-yellow-50 text-yellow-700 border border-yellow-100",
 
-    HIGH: "bg-orange-50 text-orange-700 border border-orange-100",
+    HIGH:
+      "bg-orange-50 text-orange-700 border border-orange-100",
 
     URGENT:
       "bg-red-50 text-red-700 border border-red-100",
@@ -1002,15 +1132,21 @@ function TicketRow({
 
       <span
         className={`inline-flex w-fit px-2 py-1 rounded text-[9px] font-bold ${
-          statusStyles[ticket.status]
+          statusStyles[
+            ticket.status
+          ]
         }`}
       >
-        {formatStatus(ticket.status)}
+        {formatStatus(
+          ticket.status
+        )}
       </span>
 
       <span
         className={`inline-flex w-fit px-2 py-1 rounded text-[9px] font-bold ${
-          priorityStyles[ticket.priority]
+          priorityStyles[
+            ticket.priority
+          ]
         }`}
       >
         {ticket.priority}
@@ -1028,6 +1164,7 @@ function TicketDetails({
   ticket,
   onClose,
   onStatusChange,
+  updatingStatus,
 }) {
   const statusStyles = {
     OPEN:
@@ -1049,7 +1186,11 @@ function TicketDetails({
   return (
     <div
       className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4"
-      onClick={onClose}
+      onClick={() => {
+        if (!updatingStatus) {
+          onClose();
+        }
+      }}
     >
 
       <div
@@ -1076,8 +1217,16 @@ function TicketDetails({
           </div>
 
           <button
+            type="button"
+            disabled={
+              updatingStatus !== null
+            }
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition text-xl"
+            className={`w-8 h-8 rounded-lg text-xl transition ${
+              updatingStatus !== null
+                ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+            }`}
           >
             ×
           </button>
@@ -1152,7 +1301,9 @@ function TicketDetails({
               ]
             }`}
           >
-            {formatStatus(ticket.status)}
+            {formatStatus(
+              ticket.status
+            )}
           </span>
 
         </div>
@@ -1167,26 +1318,52 @@ function TicketDetails({
 
           <div className="flex flex-wrap gap-2">
 
-            {STATUS.map((status) => (
+            {STATUS.map((status) => {
 
-              <button
-                key={status}
-                onClick={() =>
-                  onStatusChange(
-                    ticket,
+              const isUpdating =
+                updatingStatus ===
+                status;
+
+              const isDisabled =
+                updatingStatus !==
+                null ||
+                ticket.status ===
+                  status;
+
+              return (
+                <button
+                  key={status}
+                  type="button"
+                  disabled={isDisabled}
+                  onClick={() =>
+                    onStatusChange(
+                      ticket,
+                      status
+                    )
+                  }
+                  className={`px-3 py-2 rounded-lg text-[11px] border transition flex items-center justify-center gap-2 ${
+                    ticket.status ===
                     status
-                  )
-                }
-                className={`px-3 py-2 rounded-lg text-[11px] border transition ${
-                  ticket.status === status
-                    ? "bg-gray-900 text-white border-gray-900"
-                    : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                }`}
-              >
-                {formatStatus(status)}
-              </button>
+                      ? "bg-gray-900 text-white border-gray-900 cursor-default"
+                      : isDisabled
+                      ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                      : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
 
-            ))}
+                  {isUpdating && (
+                    <span className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                  )}
+
+                  {isUpdating
+                    ? "Updating..."
+                    : formatStatus(
+                        status
+                      )}
+
+                </button>
+              );
+            })}
 
           </div>
 
@@ -1206,8 +1383,10 @@ function formatStatus(status) {
   return status
     .replaceAll("_", " ")
     .toLowerCase()
-    .replace(/\b\w/g, (character) =>
-      character.toUpperCase()
+    .replace(
+      /\b\w/g,
+      (character) =>
+        character.toUpperCase()
     );
 }
 
